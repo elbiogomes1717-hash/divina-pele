@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Divina Pele — Painel Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --brown-dark: #1e1208;
+  --brown-mid: #5a2d14;
+  --brown-warm: #8b4a22;
+  --gold: #c4956a;
+  --gold-light: #e8c49a;
+  --cream: #fdf8f3;
+  --cream-2: #f5ede3;
+  --cream-3: #ede0d0;
+  --text-dark: #1e1208;
+  --text-mid: #6b4a32;
+  --text-light: #a07850;
+  --white: #ffffff;
+  --green: #2e7d4f;
+  --red: #c0392b;
+}
+body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dark); min-height: 100vh; }
+
+/* ─── LOGIN ─── */
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(160deg, var(--brown-dark), var(--brown-mid));
+}
+.login-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.login-brand { font-size: 20px; letter-spacing: 2px; color: var(--brown-dark); margin-bottom: 4px; }
+.login-sub { font-size: 11px; color: var(--text-light); letter-spacing: 1px; margin-bottom: 28px; }
+.login-label { display: block; font-size: 10px; color: var(--text-light); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; text-align: left; }
+.login-input {
+  width: 100%;
+  background: var(--cream);
+  border: 1.5px solid var(--cream-3);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-family: 'Georgia', serif;
+  outline: none;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+.login-input:focus { border-color: var(--gold); }
+.login-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--brown-dark), var(--brown-warm));
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 13px;
+  font-size: 14px;
+  font-family: 'Georgia', serif;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.login-btn:hover { opacity: 0.9; }
+.login-error { font-size: 12px; color: var(--red); margin-top: 10px; display: none; }
+.login-error.visible { display: block; }
+
+/* ─── ADMIN LAYOUT ─── */
+#admin-panel { display: none; }
+.admin-header {
+  background: var(--brown-dark);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.ah-left { display: flex; align-items: center; gap: 8px; }
+.ah-brand { font-size: 14px; letter-spacing: 2px; color: var(--gold-light); }
+.ah-sub { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 1px; }
+.ah-right { display: flex; align-items: center; gap: 12px; }
+.ah-date { font-size: 11px; color: rgba(255,255,255,0.45); }
+.logout-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.6);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: 'Georgia', serif;
+  transition: all 0.2s;
+}
+.logout-btn:hover { background: rgba(255,255,255,0.15); }
+
+.admin-content { max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; }
+
+/* ─── STATS ─── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.stat-num { font-size: 28px; font-weight: 700; color: var(--brown-warm); line-height: 1; }
+.stat-label { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+
+/* ─── TABS ─── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--white);
+  border-radius: 12px;
+  padding: 6px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 12px;
+  font-family: 'Georgia', serif;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab-btn.active { background: var(--brown-dark); color: var(--gold-light); }
+
+/* ─── PANELS ─── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeUp .25s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
+
+/* ─── DATE SELECTOR ─── */
+.date-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--white);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.date-selector label { font-size: 11px; color: var(--text-light); flex-shrink: 0; }
+.date-input {
+  border: 1.5px solid var(--cream-3);
+  border-radius: 7px;
+  padding: 7px 10px;
+  font-size: 13px;
+  font-family: 'Georgia', serif;
+  color: var(--text-dark);
+  background: var(--cream);
+  outline: none;
+  cursor: pointer;
+}
+.date-input:focus { border-color: var(--gold); }
+.refresh-btn {
+  background: var(--cream-2);
+  border: 1px solid var(--cream-3);
+  border-radius: 7px;
+  padding: 7px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--text-mid);
+  font-family: 'Georgia', serif;
+  transition: all 0.2s;
+}
+.refresh-btn:hover { border-color: var(--gold); color: var(--brown-warm); }
+
+/* ─── BOOKING CARDS ─── */
+.booking-list { display: flex; flex-direction: column; gap: 10px; }
+.booking-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--gold);
+  transition: all 0.2s;
+}
+.booking-card.cancelled { border-left-color: var(--cream-3); opacity: 0.6; }
+.bc-time {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--brown-warm);
+  min-width: 48px;
+  flex-shrink: 0;
+}
+.bc-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; background: var(--gold); }
+.bc-dot.cancelled { background: var(--cream-3); }
+.bc-info { flex: 1; min-width: 0; }
+.bc-name { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+.bc-service { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+.bc-contact { font-size: 11px; color: var(--text-mid); margin-top: 3px; }
+.bc-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.bc-btn {
+  border: none;
+  border-radius: 7px;
+  padding: 7px 12px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: 'Georgia', serif;
+  transition: all 0.2s;
+}
+.bc-btn.cancel { background: #fdecea; color: var(--red); }
+.bc-btn.cancel:hover { background: #fbdada; }
+.bc-btn.restore { background: #edf7f0; color: var(--green); }
+.bc-btn.restore:hover { background: #d8f0e0; }
+.bc-status {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: #edf7f0;
+  color: var(--green);
+  flex-shrink: 0;
+}
+.bc-status.cancelled { background: var(--cream-2); color: var(--text-light); }
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-light);
+  font-size: 13px;
+}
+.empty-state .icon { font-size: 36px; margin-bottom: 12px; }
+
+/* ─── BLOCK SLOTS ─── */
+.block-form {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  margin-bottom: 20px;
+}
+.block-form h3 { font-size: 13px; color: var(--text-dark); margin-bottom: 16px; font-weight: 600; }
+.block-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.block-field { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 130px; }
+.block-field label { font-size: 10px; color: var(--text-light); letter-spacing: 1px; text-transform: uppercase; }
+.block-input {
+  border: 1.5px solid var(--cream-3);
+  border-radius: 7px;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-family: 'Georgia', serif;
+  background: var(--cream);
+  outline: none;
+  color: var(--text-dark);
+}
+.block-input:focus { border-color: var(--gold); }
+.block-btn-add {
+  background: var(--brown-dark);
+  color: var(--gold-light);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 12px;
+  font-family: 'Georgia', serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+  height: 38px;
+}
+.block-btn-add:hover { opacity: 0.85; }
+
+.blocked-list { display: flex; flex-direction: column; gap: 8px; }
+.blocked-item {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-left: 3px solid #f0c0c0;
+}
+.bi-info { font-size: 12px; color: var(--text-dark); }
+.bi-info span { font-size: 11px; color: var(--text-light); display: block; margin-top: 2px; }
+.bi-remove {
+  background: none;
+  border: none;
+  color: var(--red);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.bi-remove:hover { background: #fdecea; }
+
+/* ─── LOADING ─── */
+.loading { text-align: center; padding: 20px; color: var(--text-light); font-size: 12px; }
+.spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--cream-3); border-top-color: var(--gold); border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  background: var(--brown-dark);
+  color: var(--gold-light);
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 13px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  transform: translateY(80px);
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 999;
+}
+.toast.visible { transform: translateY(0); opacity: 1; }
+
+@media (max-width: 640px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .booking-card { flex-wrap: wrap; }
+  .bc-actions { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-wrap">
+  <div class="login-card">
+    <div class="login-brand">✦ DIVINA PELE</div>
+    <div class="login-sub">PAINEL ADMIN · ERICA FRIIS</div>
+    <label class="login-label">Senha</label>
+    <input class="login-input" type="password" id="login-password" placeholder="••••••••"
+      onkeypress="if(event.key==='Enter') doLogin()">
+    <button class="login-btn" onclick="doLogin()">Entrar</button>
+    <div class="login-error" id="login-error">Senha incorreta. Tente novamente.</div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel">
+  <header class="admin-header">
+    <div class="ah-left">
+      <span style="color:var(--gold-light);font-size:14px;">✦</span>
+      <div>
+        <div class="ah-brand">DIVINA PELE</div>
+        <div class="ah-sub">PAINEL ADMIN</div>
+      </div>
+    </div>
+    <div class="ah-right">
+      <span class="ah-date" id="today-label"></span>
+      <button class="logout-btn" onclick="doLogout()">Sair</button>
+    </div>
+  </header>
+
+  <div class="admin-content">
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-today">—</div>
+        <div class="stat-label">Hoje</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-month">—</div>
+        <div class="stat-label">Este mês</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-pending">—</div>
+        <div class="stat-label">Próximos 7 dias</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-revenue" style="font-size:20px;">—</div>
+        <div class="stat-label">Receita este mês</div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('agenda')">📅 Agenda</button>
+      <button class="tab-btn" onclick="switchTab('todos')">📋 Todos</button>
+      <button class="tab-btn" onclick="switchTab('bloquear')">🚫 Bloquear</button>
+    </div>
+
+    <!-- TAB: AGENDA DO DIA -->
+    <div class="tab-panel active" id="tab-agenda">
+      <div class="date-selector">
+        <label>Ver agenda de:</label>
+        <input class="date-input" type="date" id="agenda-date" onchange="loadAgenda()">
+        <button class="refresh-btn" onclick="loadAgenda()">↺ Atualizar</button>
+      </div>
+      <div class="booking-list" id="agenda-list">
+        <div class="loading"><span class="spinner"></span> Carregando...</div>
+      </div>
+    </div>
+
+    <!-- TAB: TODOS OS AGENDAMENTOS -->
+    <div class="tab-panel" id="tab-todos">
+      <div class="date-selector" style="gap:12px; flex-wrap:wrap;">
+        <label>De:</label>
+        <input class="date-input" type="date" id="filter-from" onchange="loadAll()">
+        <label>até:</label>
+        <input class="date-input" type="date" id="filter-to" onchange="loadAll()">
+        <button class="refresh-btn" onclick="loadAll()">↺ Filtrar</button>
+      </div>
+      <div class="booking-list" id="all-list">
+        <div class="loading"><span class="spinner"></span> Carregando...</div>
+      </div>
+    </div>
+
+    <!-- TAB: BLOQUEAR HORÁRIOS -->
+    <div class="tab-panel" id="tab-bloquear">
+      <div class="block-form">
+        <h3>Bloquear data / horário</h3>
+        <div class="block-row">
+          <div class="block-field">
+            <label>Data</label>
+            <input class="block-input" type="date" id="block-date">
+          </div>
+          <div class="block-field">
+            <label>Horário (vazio = dia todo)</label>
+            <input class="block-input" type="time" id="block-time" step="3600">
+          </div>
+          <div class="block-field" style="flex:2">
+            <label>Motivo (opcional)</label>
+            <input class="block-input" type="text" id="block-reason" placeholder="Folga, feriado, curso...">
+          </div>
+          <button class="block-btn-add" onclick="addBlock()">Bloquear</button>
+        </div>
+      </div>
+
+      <div class="blocked-list" id="blocked-list">
+        <div class="loading"><span class="spinner"></span> Carregando bloqueios...</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+// CONFIGURAÇÃO — MESMO DO index.html
+// ══════════════════════════════════════════
+const SUPABASE_URL = 'https://ftvxpnudvamahfizzuvf.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dnhwbnVkdmFtYWhmaXp6dXZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5OTYxODIsImV4cCI6MjA5MzU3MjE4Mn0.s1q7M85T_efk7chLgPOwsdp5zFjE7RxO6MNwwEOFeVg';
+
+// SENHA DO ADMIN (mude para uma senha forte!)
+const ADMIN_PASSWORD = 'divina2024';
+
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ══════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════
+function doLogin() {
+  const pwd = document.getElementById('login-password').value;
+  if (pwd === ADMIN_PASSWORD) {
+    document.getElementById('login-wrap').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    initAdmin();
+  } else {
+    document.getElementById('login-error').classList.add('visible');
+  }
+}
+
+function doLogout() {
+  document.getElementById('login-wrap').style.display = 'flex';
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('login-password').value = '';
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+function initAdmin() {
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+
+  document.getElementById('today-label').textContent = today.toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  document.getElementById('agenda-date').value = todayStr;
+
+  // Filtros padrão: mês atual
+  const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+  const lastDay = new Date(today.getFullYear(), today.getMonth()+1, 0).toISOString().split('T')[0];
+  document.getElementById('filter-from').value = firstDay;
+  document.getElementById('filter-to').value = lastDay;
+
+  loadStats();
+  loadAgenda();
+  loadBlockedSlots();
+}
+
+// ══════════════════════════════════════════
+// STATS
+// ══════════════════════════════════════════
+async function loadStats() {
+  const today = new Date().toISOString().split('T')[0];
+  const monthStart = today.slice(0, 8) + '01';
+  const monthEnd = new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).toISOString().split('T')[0];
+  const next7 = new Date(Date.now() + 7*86400000).toISOString().split('T')[0];
+
+  const [r1, r2, r3, r4] = await Promise.all([
+    db.from('bookings').select('id', { count: 'exact' }).eq('date', today).eq('status','confirmed'),
+    db.from('bookings').select('id', { count: 'exact' }).gte('date', monthStart).lte('date', monthEnd).eq('status','confirmed'),
+    db.from('bookings').select('id', { count: 'exact' }).gt('date', today).lte('date', next7).eq('status','confirmed'),
+    db.from('bookings').select('service_id, services(price)').gte('date', monthStart).lte('date', monthEnd).eq('status','confirmed')
+  ]);
+
+  document.getElementById('stat-today').textContent = r1.count || 0;
+  document.getElementById('stat-month').textContent = r2.count || 0;
+  document.getElementById('stat-pending').textContent = r3.count || 0;
+
+  // Receita
+  let revenue = 0;
+  if (r4.data) {
+    r4.data.forEach(b => { if (b.services) revenue += parseFloat(b.services.price || 0); });
+  }
+  document.getElementById('stat-revenue').textContent = '€' + revenue.toFixed(0);
+}
+
+// ══════════════════════════════════════════
+// AGENDA DO DIA
+// ══════════════════════════════════════════
+async function loadAgenda() {
+  const date = document.getElementById('agenda-date').value;
+  if (!date) return;
+  const list = document.getElementById('agenda-list');
+  list.innerHTML = '<div class="loading"><span class="spinner"></span> Carregando...</div>';
+
+  const { data, error } = await db.from('bookings')
+    .select('*, services(name, price, emoji, duration)')
+    .eq('date', date)
+    .order('time');
+
+  if (error) { list.innerHTML = '<div class="empty-state">Erro ao carregar.</div>'; return; }
+  renderBookings(list, data);
+}
+
+// ══════════════════════════════════════════
+// TODOS
+// ══════════════════════════════════════════
+async function loadAll() {
+  const from = document.getElementById('filter-from').value;
+  const to = document.getElementById('filter-to').value;
+  const list = document.getElementById('all-list');
+  list.innerHTML = '<div class="loading"><span class="spinner"></span> Carregando...</div>';
+
+  const { data, error } = await db.from('bookings')
+    .select('*, services(name, price, emoji, duration)')
+    .gte('date', from).lte('date', to)
+    .order('date').order('time');
+
+  if (error) { list.innerHTML = '<div class="empty-state">Erro ao carregar.</div>'; return; }
+  renderBookings(list, data);
+}
+
+function renderBookings(container, bookings) {
+  if (!bookings || bookings.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="icon">📭</div>Nenhum agendamento neste período.</div>';
+    return;
+  }
+  container.innerHTML = bookings.map(b => {
+    const svc = b.services;
+    const isCancelled = b.status === 'cancelled';
+    const date = new Date(b.date + 'T12:00:00').toLocaleDateString('pt-BR', { weekday:'short', day:'numeric', month:'short' });
+    return `
+      <div class="booking-card ${isCancelled ? 'cancelled' : ''}">
+        <div class="bc-time">${b.time.slice(0,5)}</div>
+        <div class="bc-dot ${isCancelled ? 'cancelled' : ''}"></div>
+        <div class="bc-info">
+          <div class="bc-name">${b.client_name}</div>
+          <div class="bc-service">${svc ? (svc.emoji || '✨') + ' ' : ''}${b.service_name} · ${date} · ${b.end_time.slice(0,5)}</div>
+          <div class="bc-contact">
+            ${b.client_email}
+            ${b.client_phone ? ' · ' + b.client_phone : ''}
+            ${b.notes ? '<br><em style="font-size:10px;color:var(--text-light)">' + b.notes + '</em>' : ''}
+          </div>
+        </div>
+        <div class="bc-status ${isCancelled ? 'cancelled' : ''}">
+          ${isCancelled ? 'Cancelado' : 'Confirmado'}
+        </div>
+        <div class="bc-actions">
+          ${!isCancelled
+            ? `<button class="bc-btn cancel" onclick="cancelBooking('${b.id}')">Cancelar</button>`
+            : `<button class="bc-btn restore" onclick="restoreBooking('${b.id}')">Restaurar</button>`
+          }
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function cancelBooking(id) {
+  if (!confirm('Cancelar este agendamento?')) return;
+  await db.from('bookings').update({ status: 'cancelled' }).eq('id', id);
+  showToast('Agendamento cancelado.');
+  loadStats(); loadAgenda(); loadAll();
+}
+
+async function restoreBooking(id) {
+  await db.from('bookings').update({ status: 'confirmed' }).eq('id', id);
+  showToast('Agendamento restaurado.');
+  loadStats(); loadAgenda(); loadAll();
+}
+
+// ══════════════════════════════════════════
+// BLOQUEAR HORÁRIOS
+// ══════════════════════════════════════════
+async function loadBlockedSlots() {
+  const list = document.getElementById('blocked-list');
+  const today = new Date().toISOString().split('T')[0];
+  const { data } = await db.from('blocked_slots').select('*').gte('date', today).order('date').order('time');
+
+  if (!data || data.length === 0) {
+    list.innerHTML = '<div class="empty-state"><div class="icon">✅</div>Nenhum horário bloqueado.</div>';
+    return;
+  }
+
+  list.innerHTML = data.map(b => {
+    const date = new Date(b.date + 'T12:00:00').toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long' });
+    const timeStr = b.time ? b.time.slice(0,5) : 'Dia todo';
+    return `
+      <div class="blocked-item">
+        <div class="bi-info">
+          🚫 ${date} · ${timeStr}
+          <span>${b.reason || 'Sem motivo especificado'}</span>
+        </div>
+        <button class="bi-remove" onclick="removeBlock('${b.id}')">✕</button>
+      </div>`;
+  }).join('');
+}
+
+async function addBlock() {
+  const date = document.getElementById('block-date').value;
+  const time = document.getElementById('block-time').value;
+  const reason = document.getElementById('block-reason').value.trim();
+
+  if (!date) { showToast('Selecione uma data.'); return; }
+
+  const { error } = await db.from('blocked_slots').insert({
+    date, time: time || null, reason: reason || null
+  });
+
+  if (error) { showToast('Erro ao bloquear.'); return; }
+
+  document.getElementById('block-date').value = '';
+  document.getElementById('block-time').value = '';
+  document.getElementById('block-reason').value = '';
+  showToast('Horário bloqueado com sucesso!');
+  loadBlockedSlots();
+}
+
+async function removeBlock(id) {
+  await db.from('blocked_slots').delete().eq('id', id);
+  showToast('Bloqueio removido.');
+  loadBlockedSlots();
+}
+
+// ══════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    const names = ['agenda','todos','bloquear'];
+    b.classList.toggle('active', names[i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'todos') loadAll();
+  if (name === 'bloquear') loadBlockedSlots();
+}
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('visible');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('visible'), 3000);
+}
+</script>
+</body>
+</html>
