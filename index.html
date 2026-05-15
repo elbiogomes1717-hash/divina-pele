@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Divina Pele — Agendamento Online</title>
+<title>Divina Pele — Online-Terminbuchung</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-/* ─── RESET & VARIABLES ─── */
+/* ─── RESET & VARIABLEN ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --brown-dark: #1e1208;
@@ -35,7 +35,7 @@ body {
   min-height: 100vh;
 }
 
-/* ─── TOPBAR ─── */
+/* ─── KOPFLEISTE ─── */
 .topbar {
   background: var(--brown-dark);
   padding: 14px 20px;
@@ -50,21 +50,9 @@ body {
 .topbar-brand .star { color: var(--gold-light); font-size: 14px; }
 .topbar-brand .name { font-size: 15px; letter-spacing: 2px; color: var(--gold-light); }
 .topbar-brand .city { font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 1.5px; display: block; margin-top: 1px; }
-.lang-toggle { display: flex; gap: 4px; }
-.lang-btn {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.5);
-  border-radius: 20px;
-  padding: 3px 10px;
-  font-size: 11px;
-  cursor: pointer;
-  font-family: 'Georgia', serif;
-  transition: all 0.2s;
-}
-.lang-btn.active { background: var(--gold); border-color: var(--gold); color: #fff; }
 
-/* ─── STEPS INDICATOR ─── */
+
+/* ─── SCHRITTANZEIGE ─── */
 .steps-bar {
   background: var(--white);
   border-bottom: 1px solid var(--cream-3);
@@ -100,15 +88,15 @@ body {
 .step-line { width: 30px; height: 1px; background: var(--cream-3); margin: 0 4px; flex-shrink: 0; }
 .step-line.done { background: var(--brown-warm); }
 
-/* ─── CONTAINER ─── */
+/* ─── INHALTSBEREICH ─── */
 .container { max-width: 520px; margin: 0 auto; padding: 24px 16px 60px; }
 
-/* ─── SCREENS ─── */
+/* ─── ANSICHTEN ─── */
 .screen { display: none; }
 .screen.active { display: block; animation: fadeUp 0.3s ease; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ─── SCREEN 1: SERVICES ─── */
+/* ─── ANSICHT 1: BEHANDLUNGEN ─── */
 .hero-section {
   background: linear-gradient(160deg, var(--brown-dark) 0%, var(--brown-mid) 55%, var(--brown-warm) 100%);
   border-radius: var(--radius);
@@ -177,7 +165,7 @@ body {
 .service-card.selected .service-desc { display: block; }
 .service-price { font-size: 16px; font-weight: 700; color: var(--brown-warm); flex-shrink: 0; }
 
-/* ─── CATEGORY FILTERS ─── */
+/* ─── KATEGORIEFILTER ─── */
 .cat-filters { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 16px; }
 .cat-btn {
   background: var(--white);
@@ -223,7 +211,7 @@ body {
 }
 .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── SCREEN 2: CALENDAR ─── */
+/* ─── ANSICHT 2: KALENDER ─── */
 .selected-service-bar {
   background: var(--brown-dark);
   border-radius: var(--radius);
@@ -325,7 +313,7 @@ body {
   font-size: 12px;
 }
 
-/* ─── SCREEN 3: FORM ─── */
+/* ─── ANSICHT 3: FORMULAR ─── */
 .booking-recap {
   background: var(--cream-2);
   border-radius: var(--radius);
@@ -387,7 +375,7 @@ body {
   text-align: center;
 }
 
-/* ─── SCREEN 4: SUCCESS ─── */
+/* ─── ANSICHT 4: ERFOLG ─── */
 .success-card {
   background: var(--white);
   border-radius: var(--radius);
@@ -451,7 +439,7 @@ body {
 }
 .new-booking-btn:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── ERROR MESSAGE ─── */
+/* ─── FEHLERMELDUNG ─── */
 .error-msg {
   background: #fdecea;
   border: 1px solid #e08080;
@@ -464,7 +452,7 @@ body {
 }
 .error-msg.visible { display: block; }
 
-/* ─── FOOTER ─── */
+/* ─── FUSSZEILE ─── */
 .footer {
   text-align: center;
   padding: 20px;
@@ -486,7 +474,7 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ─── MOBILE ─── */
+/* ─── MOBIL ─── */
 @media (max-width: 480px) {
   .container { padding: 16px 12px 60px; }
   .hero-section h1 { font-size: 24px; }
@@ -497,7 +485,7 @@ body {
 </head>
 <body>
 
-<!-- TOPBAR -->
+<!-- KOPFLEISTE -->
 <header class="topbar">
   <div class="topbar-brand">
     <span class="star">✦</span>
@@ -506,61 +494,56 @@ body {
       <span class="city">KOSMETIKSTUDIO · GILCHING</span>
     </div>
   </div>
-  <div class="lang-toggle">
-    <button class="lang-btn active" onclick="setLang('pt')">PT</button>
-    <button class="lang-btn" onclick="setLang('de')">DE</button>
-    <button class="lang-btn" onclick="setLang('en')">EN</button>
-  </div>
 </header>
 
-<!-- STEPS -->
+<!-- SCHRITTE -->
 <div class="steps-bar" id="steps-bar">
   <div class="step-item active" id="step-1">
     <div class="step-dot">1</div>
-    <span data-pt="Serviço" data-de="Behandlung" data-en="Service">Serviço</span>
+    <span>Behandlung</span>
   </div>
   <div class="step-line" id="line-1"></div>
   <div class="step-item" id="step-2">
     <div class="step-dot">2</div>
-    <span data-pt="Horário" data-de="Termin" data-en="Schedule">Horário</span>
+    <span>Termin</span>
   </div>
   <div class="step-line" id="line-2"></div>
   <div class="step-item" id="step-3">
     <div class="step-dot">3</div>
-    <span data-pt="Dados" data-de="Daten" data-en="Details">Dados</span>
+    <span>Daten</span>
   </div>
   <div class="step-line" id="line-3"></div>
   <div class="step-item" id="step-4">
     <div class="step-dot">✓</div>
-    <span data-pt="Confirmação" data-de="Bestätigung" data-en="Confirmed">Confirmação</span>
+    <span>Bestätigung</span>
   </div>
 </div>
 
 <main class="container">
 
-  <!-- ══ SCREEN 1: SERVIÇOS ══ -->
+  <!-- ══ ANSICHT 1: BEHANDLUNGEN ══ -->
   <div class="screen active" id="screen-1">
     <div class="hero-section">
-      <div class="hero-badge" data-pt="KOSMETIKSTUDIO · GILCHING" data-de="KOSMETIKSTUDIO · GILCHING" data-en="KOSMETIKSTUDIO · GILCHING">KOSMETIKSTUDIO · GILCHING</div>
-      <h1 data-pt="Sua beleza, <em>seu momento.</em>" data-de="Ihre Schönheit, <em>Ihr Moment.</em>" data-en="Your beauty, <em>your moment.</em>">Sua beleza, <em>seu momento.</em></h1>
-      <p data-pt="Agende um tratamento exclusivo com Erica Friis — especialista em cuidados da pele em Gilching." data-de="Buchen Sie eine exklusive Behandlung bei Erica Friis — Hautpflegespezialistin in Gilching." data-en="Book an exclusive treatment with Erica Friis — skin care specialist in Gilching.">Agende um tratamento exclusivo com Erica Friis — especialista em cuidados da pele em Gilching.</p>
+      <div class="hero-badge">KOSMETIKSTUDIO · GILCHING</div>
+      <h1>Ihre Schönheit, <em>Ihr Moment.</em></h1>
+      <p>Buchen Sie eine exklusive Behandlung bei Erica Friis — Spezialistin für Hautpflege in Gilching.</p>
     </div>
 
-    <p class="section-title" data-pt="Nossos Tratamentos" data-de="Unsere Behandlungen" data-en="Our Treatments">Nossos Tratamentos</p>
+    <p class="section-title">Unsere Behandlungen</p>
     <div class="cat-filters" id="cat-filters">
-      <!-- gerado por JS -->
+      <!-- per JavaScript erzeugt -->
     </div>
     <div id="services-list">
-      <div class="loading-slots">Carregando serviços...</div>
+      <div class="loading-slots">Behandlungen werden geladen...</div>
     </div>
 
     <button class="btn-primary" id="btn-next-1" disabled onclick="goToStep(2)"
-      data-pt="Escolher Horário →" data-de="Termin wählen →" data-en="Choose Schedule →">
-      Escolher Horário →
+      >
+      Termin wählen →
     </button>
   </div>
 
-  <!-- ══ SCREEN 2: CALENDÁRIO ══ -->
+  <!-- ══ ANSICHT 2: KALENDER ══ -->
   <div class="screen" id="screen-2">
     <div class="selected-service-bar">
       <span class="ssb-emoji" id="ssb-emoji">💆</span>
@@ -568,7 +551,7 @@ body {
         <div class="ssb-name" id="ssb-name">—</div>
         <div class="ssb-meta" id="ssb-meta">—</div>
       </div>
-      <span class="ssb-change" onclick="goToStep(1)" data-pt="Trocar" data-de="Ändern" data-en="Change">Trocar</span>
+      <span class="ssb-change" onclick="goToStep(1)">Ändern</span>
     </div>
 
     <div class="calendar-card">
@@ -577,86 +560,86 @@ body {
         <span class="cal-month" id="cal-month-label">—</span>
         <button class="cal-nav-btn" onclick="nextMonth()">›</button>
       </div>
-      <div class="cal-grid" id="cal-grid"><!-- gerado por JS --></div>
+      <div class="cal-grid" id="cal-grid"><!-- per JavaScript erzeugt --></div>
       <div class="cal-legend">
-        <div class="legend-item"><div class="legend-dot" style="background:var(--cream-2);border:1px solid var(--cream-3)"></div> <span data-pt="Disponível" data-de="Verfügbar" data-en="Available">Disponível</span></div>
-        <div class="legend-item"><div class="legend-dot" style="background:#fdecea"></div> <span data-pt="Ocupado" data-de="Belegt" data-en="Full">Ocupado</span></div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--brown-dark)"></div> <span data-pt="Selecionado" data-de="Gewählt" data-en="Selected">Selecionado</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--cream-2);border:1px solid var(--cream-3)"></div> <span>Verfügbar</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#fdecea"></div> <span>Belegt</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--brown-dark)"></div> <span>Ausgewählt</span></div>
       </div>
     </div>
 
     <div class="time-card" id="time-card" style="display:none">
-      <h3 id="time-card-title" data-pt="Horários disponíveis" data-de="Verfügbare Zeiten" data-en="Available times">Horários disponíveis</h3>
-      <div class="time-grid" id="time-grid"><!-- gerado por JS --></div>
+      <h3 id="time-card-title">Verfügbare Zeiten</h3>
+      <div class="time-grid" id="time-grid"><!-- per JavaScript erzeugt --></div>
     </div>
 
     <div style="display:flex; gap:10px; margin-top:8px;">
-      <button class="btn-secondary" onclick="goToStep(1)" data-pt="← Voltar" data-de="← Zurück" data-en="← Back">← Voltar</button>
+      <button class="btn-secondary" onclick="goToStep(1)">← Zurück</button>
       <button class="btn-primary" id="btn-next-2" disabled onclick="goToStep(3)" style="flex:1"
-        data-pt="Preencher Dados →" data-de="Daten eingeben →" data-en="Fill Details →">
-        Preencher Dados →
+        >
+        Daten eingeben →
       </button>
     </div>
   </div>
 
-  <!-- ══ SCREEN 3: FORMULÁRIO ══ -->
+  <!-- ══ ANSICHT 3: FORMULAR ══ -->
   <div class="screen" id="screen-3">
     <div class="booking-recap" id="booking-recap">
-      <div class="recap-row"><span data-pt="Serviço" data-de="Behandlung" data-en="Service">Serviço</span><strong id="recap-service">—</strong></div>
-      <div class="recap-row"><span data-pt="Data" data-de="Datum" data-en="Date">Data</span><strong id="recap-date">—</strong></div>
-      <div class="recap-row"><span data-pt="Horário" data-de="Uhrzeit" data-en="Time">Horário</span><strong id="recap-time">—</strong></div>
-      <div class="recap-row"><span data-pt="Valor" data-de="Preis" data-en="Price">Valor</span><strong id="recap-price">—</strong></div>
+      <div class="recap-row"><span>Behandlung</span><strong id="recap-service">—</strong></div>
+      <div class="recap-row"><span>Datum</span><strong id="recap-date">—</strong></div>
+      <div class="recap-row"><span>Uhrzeit</span><strong id="recap-time">—</strong></div>
+      <div class="recap-row"><span>Preis</span><strong id="recap-price">—</strong></div>
     </div>
 
     <div class="form-card">
       <div class="field-group">
-        <label class="field-label" data-pt="Nome completo *" data-de="Vollständiger Name *" data-en="Full name *">Nome completo *</label>
-        <input class="field-input" id="client-name" type="text" placeholder="Maria Silva" autocomplete="name">
+        <label class="field-label">Vollständiger Name *</label>
+        <input class="field-input" id="client-name" type="text" placeholder="Maria Müller" autocomplete="name">
       </div>
       <div class="field-group">
-        <label class="field-label" data-pt="E-mail *" data-de="E-Mail *" data-en="E-mail *">E-mail *</label>
-        <input class="field-input" id="client-email" type="email" placeholder="maria@email.com" autocomplete="email">
+        <label class="field-label">E-Mail *</label>
+        <input class="field-input" id="client-email" type="email" placeholder="maria@example.de" autocomplete="email">
       </div>
       <div class="field-group">
-        <label class="field-label" data-pt="Telefone / WhatsApp" data-de="Telefon / WhatsApp" data-en="Phone / WhatsApp">Telefone / WhatsApp</label>
+        <label class="field-label">Telefon / WhatsApp</label>
         <input class="field-input" id="client-phone" type="tel" placeholder="+49 176 ..." autocomplete="tel">
       </div>
       <div class="field-group">
-        <label class="field-label" data-pt="Observações (opcional)" data-de="Anmerkungen (optional)" data-en="Notes (optional)">Observações (opcional)</label>
-        <textarea class="field-textarea" id="client-notes" placeholder="Pele sensível, alergias, preferências..."></textarea>
+        <label class="field-label">Hinweise (optional)</label>
+        <textarea class="field-textarea" id="client-notes" placeholder="Empfindliche Haut, Allergien, Wünsche..."></textarea>
       </div>
 
-      <div class="error-msg" id="form-error">Por favor, preencha nome e e-mail.</div>
+      <div class="error-msg" id="form-error">Bitte geben Sie Ihren Namen und Ihre E-Mail-Adresse ein.</div>
 
       <button class="btn-primary" id="btn-confirm" onclick="submitBooking()"
-        data-pt="✓ Confirmar Agendamento" data-de="✓ Termin bestätigen" data-en="✓ Confirm Booking">
-        ✓ Confirmar Agendamento
+        >
+        ✓ Termin bestätigen
       </button>
-      <p class="privacy-note" data-pt="Os seus dados são usados apenas para confirmar o agendamento." data-de="Ihre Daten werden nur zur Terminbestätigung verwendet." data-en="Your data is used only to confirm your booking.">Os seus dados são usados apenas para confirmar o agendamento.</p>
+      <p class="privacy-note">Ihre Daten werden ausschließlich zur Bestätigung Ihres Termins verwendet.</p>
     </div>
 
-    <button class="btn-secondary" onclick="goToStep(2)" style="width:100%; margin-top:12px;" data-pt="← Voltar" data-de="← Zurück" data-en="← Back">← Voltar</button>
+    <button class="btn-secondary" onclick="goToStep(2)" style="width:100%; margin-top:12px;">← Zurück</button>
   </div>
 
-  <!-- ══ SCREEN 4: CONFIRMAÇÃO ══ -->
+  <!-- ══ ANSICHT 4: BESTÄTIGUNG ══ -->
   <div class="screen" id="screen-4">
     <div class="success-card">
       <div class="success-icon">✓</div>
-      <h2 data-pt="Agendado com sucesso!" data-de="Erfolgreich gebucht!" data-en="Booking confirmed!">Agendado com sucesso!</h2>
-      <p data-pt="Seu horário está garantido. Até breve no Divina Pele, Gilching." data-de="Ihr Termin ist bestätigt. Bis bald im Divina Pele, Gilching." data-en="Your appointment is confirmed. See you soon at Divina Pele, Gilching.">Seu horário está garantido. Até breve no Divina Pele, Gilching.</p>
+      <h2>Termin erfolgreich gebucht!</h2>
+      <p>Ihr Termin ist bestätigt. Wir freuen uns auf Sie bei Divina Pele in Gilching.</p>
 
       <div class="booking-summary-box">
-        <div class="bsb-row"><span class="bsb-icon">💆</span><span class="bsb-key" data-pt="Serviço" data-de="Behandlung" data-en="Service">Serviço</span><span class="bsb-val" id="conf-service">—</span></div>
-        <div class="bsb-row"><span class="bsb-icon">📅</span><span class="bsb-key" data-pt="Data" data-de="Datum" data-en="Date">Data</span><span class="bsb-val" id="conf-date">—</span></div>
-        <div class="bsb-row"><span class="bsb-icon">⏰</span><span class="bsb-key" data-pt="Horário" data-de="Uhrzeit" data-en="Time">Horário</span><span class="bsb-val" id="conf-time">—</span></div>
-        <div class="bsb-row"><span class="bsb-icon">📍</span><span class="bsb-key" data-pt="Local" data-de="Ort" data-en="Location">Local</span><span class="bsb-val">Gilching, Alemanha</span></div>
+        <div class="bsb-row"><span class="bsb-icon">💆</span><span class="bsb-key">Behandlung</span><span class="bsb-val" id="conf-service">—</span></div>
+        <div class="bsb-row"><span class="bsb-icon">📅</span><span class="bsb-key">Datum</span><span class="bsb-val" id="conf-date">—</span></div>
+        <div class="bsb-row"><span class="bsb-icon">⏰</span><span class="bsb-key">Uhrzeit</span><span class="bsb-val" id="conf-time">—</span></div>
+        <div class="bsb-row"><span class="bsb-icon">📍</span><span class="bsb-key">Ort</span><span class="bsb-val">Gilching, Deutschland</span></div>
       </div>
 
       <div class="email-notice">
-        ✉️ <span data-pt="Confirmação enviada para o seu e-mail." data-de="Bestätigung an Ihre E-Mail gesendet." data-en="Confirmation sent to your email.">Confirmação enviada para o seu e-mail.</span>
+        ✉️ <span>Die Bestätigung wurde an Ihre E-Mail-Adresse gesendet.</span>
       </div>
 
-      <button class="new-booking-btn" onclick="resetApp()" data-pt="Fazer outro agendamento" data-de="Neuen Termin buchen" data-en="Book another appointment">Fazer outro agendamento</button>
+      <button class="new-booking-btn" onclick="resetApp()">Neuen Termin buchen</button>
     </div>
   </div>
 
@@ -666,8 +649,8 @@ body {
 
 <script>
 // ══════════════════════════════════════════
-// CONFIGURAÇÃO DO SUPABASE
-// Substitua com as suas credenciais!
+// SUPABASE-KONFIGURATION
+// Bei Bedarf durch eigene Zugangsdaten ersetzen.
 // ══════════════════════════════════════════
 const SUPABASE_URL = 'https://ftvxpnudvamahfizzuvf.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dnhwbnVkdmFtYWhmaXp6dXZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5OTYxODIsImV4cCI6MjA5MzU3MjE4Mn0.s1q7M85T_efk7chLgPOwsdp5zFjE7RxO6MNwwEOFeVg';
@@ -676,51 +659,106 @@ const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ══════════════════════════════════════════
-// HORÁRIOS DE FUNCIONAMENTO
-// Ajuste conforme a agenda da Erica
+// ÖFFNUNGSZEITEN
+// Nach Ericas Kalender anpassen
 // ══════════════════════════════════════════
 const WORK_HOURS = ['09:00', '10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
-const WORK_DAYS = [1, 2, 3, 4, 5]; // 0=Dom, 1=Seg ... 6=Sáb (sem Dom e Sáb)
+const WORK_DAYS = [1, 2, 3, 4, 5]; // 0=So, 1=Mo ... 6=Sa (ohne Samstag und Sonntag)
 
 // ══════════════════════════════════════════
-// ESTADO DO APP
+// APP-STATUS
 // ══════════════════════════════════════════
-let lang = 'pt';
 let services = [];
 let selectedService = null;
-let activeCategory = 'Todos';
+let activeCategory = 'Alle';
 let selectedDate = null;
 let selectedTime = null;
 let currentYear, currentMonth;
-let takenSlots = []; // slots já reservados no mês
-let blockedDays = []; // dias totalmente bloqueados
+let takenSlots = []; // bereits gebuchte Zeiten im Monat
+let blockedDays = []; // vollständig gesperrte Tage
 
-// ══════════════════════════════════════════
-// IDIOMA
-// ══════════════════════════════════════════
-function setLang(l) {
-  lang = l;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === l.toUpperCase()));
-  document.querySelectorAll('[data-pt]').forEach(el => {
-    const text = el.getAttribute('data-' + l) || el.getAttribute('data-pt');
-    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-      // não substitui inputs
-    } else {
-      el.innerHTML = text;
-    }
-  });
-  renderServices();
+
+const CATEGORY_LABELS = {
+  all: 'Alle',
+  nails: 'Maniküre & Pediküre',
+  face: 'Augenbrauen & Wimpern',
+  men: 'Haarentfernung für Herren',
+  women: 'Haarentfernung für Damen'
+};
+
+const SERVICE_NAMES_BY_ORDER = {
+  101: 'Maniküre mit Shellac',
+  102: 'Maniküre',
+  103: 'Pediküre',
+  104: 'Pediküre mit Shellac',
+  105: 'Fußpflege',
+  201: 'Augenbrauenlifting',
+  202: 'Wimpernlifting',
+  203: 'Gesichtsbehandlung – Mikrodermabrasion',
+  204: 'Luxus-Gesichtsbehandlung (Mikrodermabrasion + Hautlicht)',
+  205: 'Klassische feuchtigkeitsspendende Gesichtsbehandlung',
+  301: 'Haarentfernung Herren – Nase',
+  302: 'Haarentfernung Herren – Achseln',
+  303: 'Haarentfernung Herren – Nacken',
+  304: 'Haarentfernung Herren – Brust',
+  305: 'Haarentfernung Herren – Bauch',
+  306: 'Haarentfernung Herren – Rücken komplett',
+  307: 'Haarentfernung Herren – Oberarme',
+  308: 'Haarentfernung Herren – Unterarme',
+  309: 'Haarentfernung Herren – Arme komplett',
+  310: 'Haarentfernung Herren – Oberschenkel',
+  311: 'Haarentfernung Herren – Unterschenkel',
+  312: 'Haarentfernung Herren – Beine komplett',
+  313: 'Haarentfernung Herren – Brust & Bauch',
+  401: 'Haarentfernung Damen – Achseln',
+  402: 'Haarentfernung Damen – Gesicht',
+  403: 'Haarentfernung Damen – Oberlippe',
+  404: 'Haarentfernung Damen – Kinn',
+  405: 'Haarentfernung Damen – Gesichtseiten',
+  406: 'Haarentfernung Damen – Hals',
+  407: 'Haarentfernung Damen – Arme komplett',
+  408: 'Haarentfernung Damen – Unterarme',
+  410: 'Haarentfernung Damen – Bauch',
+  411: 'Haarentfernung Damen – Gesäß',
+  412: 'Haarentfernung Damen – Bikinizone',
+  413: 'Haarentfernung Damen – Intimbereich komplett',
+  414: 'Haarentfernung Damen – Oberschenkel',
+  415: 'Haarentfernung Damen – Unterschenkel',
+  416: 'Haarentfernung Damen – Beine komplett',
+  417: 'Haarentfernung Damen – Intimbereich komplett, Achseln & Beine'
+};
+
+function getCategoryKey(service) {
+  const order = Number(service.sort_order || 0);
+  if (order >= 100 && order < 200) return 'nails';
+  if (order >= 200 && order < 300) return 'face';
+  if (order >= 300 && order < 400) return 'men';
+  if (order >= 400 && order < 500) return 'women';
+  return 'all';
+}
+
+function translateCategory(service) {
+  return CATEGORY_LABELS[getCategoryKey(service)] || CATEGORY_LABELS.all;
+}
+
+function translateServiceName(service) {
+  return SERVICE_NAMES_BY_ORDER[Number(service.sort_order)] || service.name;
 }
 
 // ══════════════════════════════════════════
-// STEPS
+// SCHRITTE
 // ══════════════════════════════════════════
 function goToStep(n) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + n).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
   updateStepsUI(n);
-  if (n === 2 && selectedDate) loadTimeSlots(selectedDate);
+  if (n === 2 && selectedService) {
+    document.getElementById('ssb-emoji').textContent = selectedService.emoji || '✨';
+    document.getElementById('ssb-name').textContent = translateServiceName(selectedService);
+    document.getElementById('ssb-meta').textContent = `${selectedService.duration} min · ${translateCategory(selectedService)}`;
+    if (selectedDate) loadTimeSlots(selectedDate);
+  }
   if (n === 3) fillRecap();
 }
 
@@ -736,7 +774,7 @@ function updateStepsUI(current) {
 }
 
 // ══════════════════════════════════════════
-// CARREGAR SERVIÇOS
+// BEHANDLUNGEN LADEN
 // ══════════════════════════════════════════
 async function loadServices() {
   const { data, error } = await db.from('services').select('*').eq('active', true).order('sort_order');
@@ -747,13 +785,13 @@ async function loadServices() {
 }
 
 function renderCategoryFilters() {
-  const cats = ['Todos', ...new Set(services.map(s => s.category))];
+  const cats = [CATEGORY_LABELS.all, ...new Set(services.map(translateCategory))];
   const emojis = {
-    'Todos': '✦',
-    'Manicure e Pedicure': '💅',
-    'Sobrancelhas e Cílios': '👁️',
-    'Depilação Masculina': '🧔',
-    'Depilação Feminina': '👩'
+    'Alle': '✦',
+    [CATEGORY_LABELS.nails]: '💅',
+    [CATEGORY_LABELS.face]: '👁️',
+    [CATEGORY_LABELS.men]: '🧔',
+    [CATEGORY_LABELS.women]: '👩'
   };
   document.getElementById('cat-filters').innerHTML = cats.map(c =>
     `<button class="cat-btn ${c === activeCategory ? 'active' : ''}" onclick="setCategory('${c}')">
@@ -770,13 +808,13 @@ function setCategory(cat) {
 
 function renderServices() {
   const container = document.getElementById('services-list');
-  if (!services.length) { container.innerHTML = '<div class="loading-slots">Nenhum serviço encontrado.</div>'; return; }
+  if (!services.length) { container.innerHTML = '<div class="loading-slots">Keine Behandlung gefunden.</div>'; return; }
 
-  const filtered = activeCategory === 'Todos'
+  const filtered = activeCategory === 'Alle'
     ? services
-    : services.filter(s => s.category === activeCategory);
+    : services.filter(s => translateCategory(s) === activeCategory);
 
-  if (!filtered.length) { container.innerHTML = '<div class="loading-slots">Nenhum serviço nesta categoria.</div>'; return; }
+  if (!filtered.length) { container.innerHTML = '<div class="loading-slots">Keine Behandlung in dieser Kategorie.</div>'; return; }
 
   container.innerHTML = filtered.map(s => {
     const isSelected = selectedService && selectedService.id === s.id;
@@ -787,8 +825,8 @@ function renderServices() {
       <div class="service-card ${isSelected ? 'selected' : ''}" onclick="selectService('${s.id}')">
         <div class="service-emoji">${s.emoji || '✨'}</div>
         <div class="service-info">
-          <div class="service-name">${s.name}</div>
-          <div class="service-meta">${durStr} · ${s.category}</div>
+          <div class="service-name">${translateServiceName(s)}</div>
+          <div class="service-meta">${durStr} · ${translateCategory(s)}</div>
           ${s.description ? `<div class="service-desc">${s.description}</div>` : ''}
         </div>
         <div class="service-price">€${Number(s.price).toFixed(0)}</div>
@@ -804,7 +842,7 @@ function selectService(id) {
 }
 
 // ══════════════════════════════════════════
-// CALENDÁRIO
+// KALENDER
 // ══════════════════════════════════════════
 function initCalendar() {
   const now = new Date();
@@ -827,19 +865,15 @@ function nextMonth() {
   renderCalendar();
 }
 
-const MONTHS_PT = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const MONTHS_DE = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-const MONTHS_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const DAYS_PT = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 const DAYS_DE = ['So','Mo','Di','Mi','Do','Fr','Sa'];
-const DAYS_EN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 async function renderCalendar() {
-  const months = lang === 'de' ? MONTHS_DE : lang === 'en' ? MONTHS_EN : MONTHS_PT;
-  const days = lang === 'de' ? DAYS_DE : lang === 'en' ? DAYS_EN : DAYS_PT;
+  const months = MONTHS_DE;
+  const days = DAYS_DE;
   document.getElementById('cal-month-label').textContent = months[currentMonth] + ' ' + currentYear;
 
-  // Buscar agendamentos e bloqueios do mês
+  // Buchungen und Sperrzeiten des Monats laden
   const monthStart = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-01`;
   const monthEnd = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-31`;
 
@@ -848,7 +882,7 @@ async function renderCalendar() {
     db.from('blocked_slots').select('date,time').gte('date', monthStart).lte('date', monthEnd)
   ]);
 
-  // Mapear datas ocupadas (todas as vagas tomadas)
+  // Belegte Daten zuordnen (alle Zeiten vergeben)
   const bookingsByDate = {};
   (bookings || []).forEach(b => {
     if (!bookingsByDate[b.date]) bookingsByDate[b.date] = [];
@@ -910,7 +944,7 @@ async function loadTimeSlots(dateStr) {
   const timeCard = document.getElementById('time-card');
   const grid = document.getElementById('time-grid');
   timeCard.style.display = 'block';
-  grid.innerHTML = '<div class="loading-slots" style="grid-column:1/-1">Carregando...</div>';
+  grid.innerHTML = '<div class="loading-slots" style="grid-column:1/-1">Wird geladen...</div>';
 
   const [{ data: bookings }, { data: blocked }] = await Promise.all([
     db.from('bookings').select('time').eq('date', dateStr).eq('status','confirmed'),
@@ -939,11 +973,11 @@ function selectTime(time) {
 }
 
 // ══════════════════════════════════════════
-// FORMULÁRIO
+// FORMULAR
 // ══════════════════════════════════════════
 function fillRecap() {
   if (!selectedService || !selectedDate || !selectedTime) return;
-  const name = lang === 'de' ? (selectedService.name_de || selectedService.name) : lang === 'en' ? (selectedService.name_en || selectedService.name) : selectedService.name;
+  const name = translateServiceName(selectedService);
   document.getElementById('recap-service').textContent = name;
   document.getElementById('recap-date').textContent = formatDate(selectedDate);
   document.getElementById('recap-time').textContent = selectedTime + ' — ' + calcEndTime(selectedTime, selectedService.duration);
@@ -953,9 +987,7 @@ function fillRecap() {
 function formatDate(dateStr) {
   const [y, m, d] = dateStr.split('-');
   const date = new Date(y, m-1, d);
-  if (lang === 'de') return date.toLocaleDateString('de-DE', { weekday:'short', day:'numeric', month:'long' });
-  if (lang === 'en') return date.toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'long' });
-  return date.toLocaleDateString('pt-BR', { weekday:'short', day:'numeric', month:'long' });
+  return date.toLocaleDateString('de-DE', { weekday:'short', day:'numeric', month:'long' });
 }
 
 function calcEndTime(startTime, duration) {
@@ -979,16 +1011,14 @@ async function submitBooking() {
 
   const btn = document.getElementById('btn-confirm');
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Confirmando...';
+  btn.innerHTML = '<span class="spinner"></span> Wird bestätigt...';
 
   const endTime = calcEndTime(selectedTime, selectedService.duration);
-  const serviceName = lang === 'de' ? (selectedService.name_de || selectedService.name)
-    : lang === 'en' ? (selectedService.name_en || selectedService.name)
-    : selectedService.name;
+  const serviceName = translateServiceName(selectedService);
 
   const { error } = await db.from('bookings').insert({
     service_id: selectedService.id,
-    service_name: selectedService.name, // sempre em PT no banco
+    service_name: serviceName, // auf Deutsch gespeicherter Anzeigename
     date: selectedDate,
     time: selectedTime + ':00',
     end_time: endTime + ':00',
@@ -1000,25 +1030,21 @@ async function submitBooking() {
   });
 
   btn.disabled = false;
-  btn.innerHTML = '✓ Confirmar Agendamento';
+  btn.innerHTML = '✓ Termin bestätigen';
 
   if (error) {
     if (error.code === '23505') {
-      // Violação da constraint UNIQUE — slot já foi tomado
-      errEl.textContent = lang === 'de'
-        ? 'Dieser Termin wurde soeben gebucht. Bitte wählen Sie einen anderen.'
-        : lang === 'en'
-        ? 'This slot was just booked. Please choose another time.'
-        : 'Este horário acabou de ser reservado. Por favor, escolha outro.';
+      // UNIQUE-Constraint verletzt — Zeit wurde bereits gebucht
+      errEl.textContent = 'Dieser Termin wurde soeben gebucht. Bitte wählen Sie eine andere Uhrzeit.';
       errEl.classList.add('visible');
     } else {
-      errEl.textContent = 'Ocorreu um erro. Por favor, tente novamente.';
+      errEl.textContent = 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.';
       errEl.classList.add('visible');
     }
     return;
   }
 
-  // Preencher tela de confirmação
+  // Bestätigungsansicht füllen
   document.getElementById('conf-service').textContent = serviceName;
   document.getElementById('conf-date').textContent = formatDate(selectedDate);
   document.getElementById('conf-time').textContent = selectedTime + ' — ' + endTime;
@@ -1026,7 +1052,7 @@ async function submitBooking() {
 }
 
 function resetApp() {
-  selectedService = null; selectedDate = null; selectedTime = null; activeCategory = 'Todos';
+  selectedService = null; selectedDate = null; selectedTime = null; activeCategory = 'Alle';
   document.getElementById('client-name').value = '';
   document.getElementById('client-email').value = '';
   document.getElementById('client-phone').value = '';
@@ -1038,7 +1064,7 @@ function resetApp() {
 }
 
 // ══════════════════════════════════════════
-// INICIALIZAÇÃO
+// STARTIALISIERUNG
 // ══════════════════════════════════════════
 loadServices();
 initCalendar();

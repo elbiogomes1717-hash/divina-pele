@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Divina Pele — Painel Admin</title>
+<title>Divina Pele — Adminbereich</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +25,7 @@
 }
 body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dark); min-height: 100vh; }
 
-/* ─── LOGIN ─── */
+/* ─── ANMELDUNG ─── */
 .login-wrap {
   min-height: 100vh;
   display: flex;
@@ -75,7 +75,7 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
 .login-error { font-size: 12px; color: var(--red); margin-top: 10px; display: none; }
 .login-error.visible { display: block; }
 
-/* ─── ADMIN LAYOUT ─── */
+/* ─── ADMINBEREICH-LAYOUT ─── */
 #admin-panel { display: none; }
 .admin-header {
   background: var(--brown-dark);
@@ -107,7 +107,7 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
 
 .admin-content { max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; }
 
-/* ─── STATS ─── */
+/* ─── STATISTIK ─── */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -124,7 +124,7 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
 .stat-num { font-size: 28px; font-weight: 700; color: var(--brown-warm); line-height: 1; }
 .stat-label { font-size: 11px; color: var(--text-light); margin-top: 4px; }
 
-/* ─── TABS ─── */
+/* ─── REGISTER ─── */
 .tabs {
   display: flex;
   gap: 4px;
@@ -148,12 +148,12 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
 }
 .tab-btn.active { background: var(--brown-dark); color: var(--gold-light); }
 
-/* ─── PANELS ─── */
+/* ─── BEREICHE ─── */
 .tab-panel { display: none; }
 .tab-panel.active { display: block; animation: fadeUp .25s ease; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
 
-/* ─── DATE SELECTOR ─── */
+/* ─── DATUMSAUSWAHL ─── */
 .date-selector {
   display: flex;
   align-items: center;
@@ -190,7 +190,7 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
 }
 .refresh-btn:hover { border-color: var(--gold); color: var(--brown-warm); }
 
-/* ─── BOOKING CARDS ─── */
+/* ─── BUCHUNGSKARTEN ─── */
 .booking-list { display: flex; flex-direction: column; gap: 10px; }
 .booking-card {
   background: var(--white);
@@ -249,7 +249,7 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
 }
 .empty-state .icon { font-size: 36px; margin-bottom: 12px; }
 
-/* ─── BLOCK SLOTS ─── */
+/* ─── SPERRZEITEN ─── */
 .block-form {
   background: var(--white);
   border-radius: 12px;
@@ -343,113 +343,113 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ANMELDUNG -->
 <div class="login-wrap" id="login-wrap">
   <div class="login-card">
     <div class="login-brand">✦ DIVINA PELE</div>
-    <div class="login-sub">PAINEL ADMIN · ERICA FRIIS</div>
-    <label class="login-label">Senha</label>
+    <div class="login-sub">ADMINBEREICH · ERICA FRIIS</div>
+    <label class="login-label">Passwort</label>
     <input class="login-input" type="password" id="login-password" placeholder="••••••••"
       onkeypress="if(event.key==='Enter') doLogin()">
-    <button class="login-btn" onclick="doLogin()">Entrar</button>
-    <div class="login-error" id="login-error">Senha incorreta. Tente novamente.</div>
+    <button class="login-btn" onclick="doLogin()">Anmelden</button>
+    <div class="login-error" id="login-error">Falsches Passwort. Bitte erneut versuchen.</div>
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
+<!-- ADMINBEREICH -->
 <div id="admin-panel">
   <header class="admin-header">
     <div class="ah-left">
       <span style="color:var(--gold-light);font-size:14px;">✦</span>
       <div>
         <div class="ah-brand">DIVINA PELE</div>
-        <div class="ah-sub">PAINEL ADMIN</div>
+        <div class="ah-sub">ADMINBEREICH</div>
       </div>
     </div>
     <div class="ah-right">
       <span class="ah-date" id="today-label"></span>
-      <button class="logout-btn" onclick="doLogout()">Sair</button>
+      <button class="logout-btn" onclick="doLogout()">Abmelden</button>
     </div>
   </header>
 
   <div class="admin-content">
 
-    <!-- STATS -->
+    <!-- STATISTIK -->
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-num" id="stat-today">—</div>
-        <div class="stat-label">Hoje</div>
+        <div class="stat-label">Heute</div>
       </div>
       <div class="stat-card">
         <div class="stat-num" id="stat-month">—</div>
-        <div class="stat-label">Este mês</div>
+        <div class="stat-label">Dieser Monat</div>
       </div>
       <div class="stat-card">
         <div class="stat-num" id="stat-pending">—</div>
-        <div class="stat-label">Próximos 7 dias</div>
+        <div class="stat-label">Nächste 7 Tage</div>
       </div>
       <div class="stat-card">
         <div class="stat-num" id="stat-revenue" style="font-size:20px;">—</div>
-        <div class="stat-label">Receita este mês</div>
+        <div class="stat-label">Umsatz diesen Monat</div>
       </div>
     </div>
 
-    <!-- TABS -->
+    <!-- REGISTER -->
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('agenda')">📅 Agenda</button>
-      <button class="tab-btn" onclick="switchTab('todos')">📋 Todos</button>
-      <button class="tab-btn" onclick="switchTab('bloquear')">🚫 Bloquear</button>
+      <button class="tab-btn active" onclick="switchTab('kalender')">📅 Kalender</button>
+      <button class="tab-btn" onclick="switchTab('todos')">📋 Alle</button>
+      <button class="tab-btn" onclick="switchTab('bloquear')">🚫 Sperren</button>
     </div>
 
-    <!-- TAB: AGENDA DO DIA -->
-    <div class="tab-panel active" id="tab-agenda">
+    <!-- TAB: TAGESKALENDER -->
+    <div class="tab-panel active" id="tab-kalender">
       <div class="date-selector">
-        <label>Ver agenda de:</label>
-        <input class="date-input" type="date" id="agenda-date" onchange="loadAgenda()">
-        <button class="refresh-btn" onclick="loadAgenda()">↺ Atualizar</button>
+        <label>Kalender für:</label>
+        <input class="date-input" type="date" id="calendar-date" onchange="loadCalendar()">
+        <button class="refresh-btn" onclick="loadCalendar()">↺ Aktualisieren</button>
       </div>
-      <div class="booking-list" id="agenda-list">
-        <div class="loading"><span class="spinner"></span> Carregando...</div>
+      <div class="booking-list" id="calendar-list">
+        <div class="loading"><span class="spinner"></span> Wird geladen...</div>
       </div>
     </div>
 
-    <!-- TAB: TODOS OS AGENDAMENTOS -->
+    <!-- TAB: ALLE TERMINE -->
     <div class="tab-panel" id="tab-todos">
       <div class="date-selector" style="gap:12px; flex-wrap:wrap;">
-        <label>De:</label>
+        <label>Von:</label>
         <input class="date-input" type="date" id="filter-from" onchange="loadAll()">
-        <label>até:</label>
+        <label>bis:</label>
         <input class="date-input" type="date" id="filter-to" onchange="loadAll()">
-        <button class="refresh-btn" onclick="loadAll()">↺ Filtrar</button>
+        <button class="refresh-btn" onclick="loadAll()">↺ Filtern</button>
       </div>
       <div class="booking-list" id="all-list">
-        <div class="loading"><span class="spinner"></span> Carregando...</div>
+        <div class="loading"><span class="spinner"></span> Wird geladen...</div>
       </div>
     </div>
 
-    <!-- TAB: BLOQUEAR HORÁRIOS -->
+    <!-- TAB: ZEITEN SPERREN -->
     <div class="tab-panel" id="tab-bloquear">
       <div class="block-form">
-        <h3>Bloquear data / horário</h3>
+        <h3>Datum / Uhrzeit sperren</h3>
         <div class="block-row">
           <div class="block-field">
-            <label>Data</label>
+            <label>Datum</label>
             <input class="block-input" type="date" id="block-date">
           </div>
           <div class="block-field">
-            <label>Horário (vazio = dia todo)</label>
+            <label>Uhrzeit (leer = ganzer Tag)</label>
             <input class="block-input" type="time" id="block-time" step="3600">
           </div>
           <div class="block-field" style="flex:2">
-            <label>Motivo (opcional)</label>
-            <input class="block-input" type="text" id="block-reason" placeholder="Folga, feriado, curso...">
+            <label>Grund (optional)</label>
+            <input class="block-input" type="text" id="block-reason" placeholder="Freier Tag, Feiertag, Schulung...">
           </div>
-          <button class="block-btn-add" onclick="addBlock()">Bloquear</button>
+          <button class="block-btn-add" onclick="addBlock()">Sperren</button>
         </div>
       </div>
 
       <div class="blocked-list" id="blocked-list">
-        <div class="loading"><span class="spinner"></span> Carregando bloqueios...</div>
+        <div class="loading"><span class="spinner"></span> Sperrzeiten werden geladen...</div>
       </div>
     </div>
 
@@ -460,19 +460,39 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
 
 <script>
 // ══════════════════════════════════════════
-// CONFIGURAÇÃO — MESMO DO index.html
+// KONFIGURATION — WIE IN index.html
 // ══════════════════════════════════════════
 const SUPABASE_URL = 'https://ftvxpnudvamahfizzuvf.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dnhwbnVkdmFtYWhmaXp6dXZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5OTYxODIsImV4cCI6MjA5MzU3MjE4Mn0.s1q7M85T_efk7chLgPOwsdp5zFjE7RxO6MNwwEOFeVg';
 
-// SENHA DO ADMIN (mude para uma senha forte!)
+// ADMIN-PASSWORT (bitte in ein starkes Passwort ändern!)
 const ADMIN_PASSWORD = 'divina2024';
 
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+const SERVICE_NAMES_BY_ORDER = {
+  101: 'Maniküre mit Shellac', 102: 'Maniküre', 103: 'Pediküre', 104: 'Pediküre mit Shellac', 105: 'Fußpflege',
+  201: 'Augenbrauenlifting', 202: 'Wimpernlifting', 203: 'Gesichtsbehandlung – Mikrodermabrasion',
+  204: 'Luxus-Gesichtsbehandlung (Mikrodermabrasion + Hautlicht)', 205: 'Klassische feuchtigkeitsspendende Gesichtsbehandlung',
+  301: 'Haarentfernung Herren – Nase', 302: 'Haarentfernung Herren – Achseln', 303: 'Haarentfernung Herren – Nacken',
+  304: 'Haarentfernung Herren – Brust', 305: 'Haarentfernung Herren – Bauch', 306: 'Haarentfernung Herren – Rücken komplett',
+  307: 'Haarentfernung Herren – Oberarme', 308: 'Haarentfernung Herren – Unterarme', 309: 'Haarentfernung Herren – Arme komplett',
+  310: 'Haarentfernung Herren – Oberschenkel', 311: 'Haarentfernung Herren – Unterschenkel', 312: 'Haarentfernung Herren – Beine komplett',
+  313: 'Haarentfernung Herren – Brust & Bauch', 401: 'Haarentfernung Damen – Achseln', 402: 'Haarentfernung Damen – Gesicht',
+  403: 'Haarentfernung Damen – Oberlippe', 404: 'Haarentfernung Damen – Kinn', 405: 'Haarentfernung Damen – Gesichtseiten',
+  406: 'Haarentfernung Damen – Hals', 407: 'Haarentfernung Damen – Arme komplett', 408: 'Haarentfernung Damen – Unterarme',
+  410: 'Haarentfernung Damen – Bauch', 411: 'Haarentfernung Damen – Gesäß', 412: 'Haarentfernung Damen – Bikinizone',
+  413: 'Haarentfernung Damen – Intimbereich komplett', 414: 'Haarentfernung Damen – Oberschenkel', 415: 'Haarentfernung Damen – Unterschenkel',
+  416: 'Haarentfernung Damen – Beine komplett', 417: 'Haarentfernung Damen – Intimbereich komplett, Achseln & Beine'
+};
+
+function getServiceName(booking) {
+  return SERVICE_NAMES_BY_ORDER[Number(booking.services?.sort_order)] || booking.service_name;
+}
+
 // ══════════════════════════════════════════
-// LOGIN
+// ANMELDUNG
 // ══════════════════════════════════════════
 function doLogin() {
   const pwd = document.getElementById('login-password').value;
@@ -492,28 +512,28 @@ function doLogout() {
 }
 
 // ══════════════════════════════════════════
-// INIT
+// START
 // ══════════════════════════════════════════
 function initAdmin() {
   const today = new Date();
   const todayStr = today.toISOString().split('T')[0];
 
-  document.getElementById('today-label').textContent = today.toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-  document.getElementById('agenda-date').value = todayStr;
+  document.getElementById('today-label').textContent = today.toLocaleDateString('de-DE', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  document.getElementById('calendar-date').value = todayStr;
 
-  // Filtros padrão: mês atual
+  // Standardfilter: aktueller Monat
   const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
   const lastDay = new Date(today.getFullYear(), today.getMonth()+1, 0).toISOString().split('T')[0];
   document.getElementById('filter-from').value = firstDay;
   document.getElementById('filter-to').value = lastDay;
 
   loadStats();
-  loadAgenda();
+  loadCalendar();
   loadBlockedSlots();
 }
 
 // ══════════════════════════════════════════
-// STATS
+// STATISTIK
 // ══════════════════════════════════════════
 async function loadStats() {
   const today = new Date().toISOString().split('T')[0];
@@ -532,7 +552,7 @@ async function loadStats() {
   document.getElementById('stat-month').textContent = r2.count || 0;
   document.getElementById('stat-pending').textContent = r3.count || 0;
 
-  // Receita
+  // Umsatz
   let revenue = 0;
   if (r4.data) {
     r4.data.forEach(b => { if (b.services) revenue += parseFloat(b.services.price || 0); });
@@ -541,57 +561,57 @@ async function loadStats() {
 }
 
 // ══════════════════════════════════════════
-// AGENDA DO DIA
+// TAGESKALENDER
 // ══════════════════════════════════════════
-async function loadAgenda() {
-  const date = document.getElementById('agenda-date').value;
+async function loadCalendar() {
+  const date = document.getElementById('calendar-date').value;
   if (!date) return;
-  const list = document.getElementById('agenda-list');
-  list.innerHTML = '<div class="loading"><span class="spinner"></span> Carregando...</div>';
+  const list = document.getElementById('calendar-list');
+  list.innerHTML = '<div class="loading"><span class="spinner"></span> Wird geladen...</div>';
 
   const { data, error } = await db.from('bookings')
-    .select('*, services(name, price, emoji, duration)')
+    .select('*, services(name, price, emoji, duration, sort_order)')
     .eq('date', date)
     .order('time');
 
-  if (error) { list.innerHTML = '<div class="empty-state">Erro ao carregar.</div>'; return; }
+  if (error) { list.innerHTML = '<div class="empty-state">Fehler beim Laden.</div>'; return; }
   renderBookings(list, data);
 }
 
 // ══════════════════════════════════════════
-// TODOS
+// ALLE TERMINE
 // ══════════════════════════════════════════
 async function loadAll() {
   const from = document.getElementById('filter-from').value;
   const to = document.getElementById('filter-to').value;
   const list = document.getElementById('all-list');
-  list.innerHTML = '<div class="loading"><span class="spinner"></span> Carregando...</div>';
+  list.innerHTML = '<div class="loading"><span class="spinner"></span> Wird geladen...</div>';
 
   const { data, error } = await db.from('bookings')
-    .select('*, services(name, price, emoji, duration)')
+    .select('*, services(name, price, emoji, duration, sort_order)')
     .gte('date', from).lte('date', to)
     .order('date').order('time');
 
-  if (error) { list.innerHTML = '<div class="empty-state">Erro ao carregar.</div>'; return; }
+  if (error) { list.innerHTML = '<div class="empty-state">Fehler beim Laden.</div>'; return; }
   renderBookings(list, data);
 }
 
 function renderBookings(container, bookings) {
   if (!bookings || bookings.length === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="icon">📭</div>Nenhum agendamento neste período.</div>';
+    container.innerHTML = '<div class="empty-state"><div class="icon">📭</div>Keine Termine in diesem Zeitraum.</div>';
     return;
   }
   container.innerHTML = bookings.map(b => {
     const svc = b.services;
     const isCancelled = b.status === 'cancelled';
-    const date = new Date(b.date + 'T12:00:00').toLocaleDateString('pt-BR', { weekday:'short', day:'numeric', month:'short' });
+    const date = new Date(b.date + 'T12:00:00').toLocaleDateString('de-DE', { weekday:'short', day:'numeric', month:'short' });
     return `
       <div class="booking-card ${isCancelled ? 'cancelled' : ''}">
         <div class="bc-time">${b.time.slice(0,5)}</div>
         <div class="bc-dot ${isCancelled ? 'cancelled' : ''}"></div>
         <div class="bc-info">
           <div class="bc-name">${b.client_name}</div>
-          <div class="bc-service">${svc ? (svc.emoji || '✨') + ' ' : ''}${b.service_name} · ${date} · ${b.end_time.slice(0,5)}</div>
+          <div class="bc-service">${svc ? (svc.emoji || '✨') + ' ' : ''}${getServiceName(b)} · ${date} · ${b.end_time.slice(0,5)}</div>
           <div class="bc-contact">
             ${b.client_email}
             ${b.client_phone ? ' · ' + b.client_phone : ''}
@@ -599,12 +619,12 @@ function renderBookings(container, bookings) {
           </div>
         </div>
         <div class="bc-status ${isCancelled ? 'cancelled' : ''}">
-          ${isCancelled ? 'Cancelado' : 'Confirmado'}
+          ${isCancelled ? 'Storniert' : 'Bestätigt'}
         </div>
         <div class="bc-actions">
           ${!isCancelled
-            ? `<button class="bc-btn cancel" onclick="cancelBooking('${b.id}')">Cancelar</button>`
-            : `<button class="bc-btn restore" onclick="restoreBooking('${b.id}')">Restaurar</button>`
+            ? `<button class="bc-btn cancel" onclick="cancelBooking('${b.id}')">Stornieren</button>`
+            : `<button class="bc-btn restore" onclick="restoreBooking('${b.id}')">Wiederherstellen</button>`
           }
         </div>
       </div>`;
@@ -612,20 +632,20 @@ function renderBookings(container, bookings) {
 }
 
 async function cancelBooking(id) {
-  if (!confirm('Cancelar este agendamento?')) return;
+  if (!confirm('Diesen Termin stornieren?')) return;
   await db.from('bookings').update({ status: 'cancelled' }).eq('id', id);
-  showToast('Agendamento cancelado.');
-  loadStats(); loadAgenda(); loadAll();
+  showToast('Termin storniert.');
+  loadStats(); loadCalendar(); loadAll();
 }
 
 async function restoreBooking(id) {
   await db.from('bookings').update({ status: 'confirmed' }).eq('id', id);
-  showToast('Agendamento restaurado.');
-  loadStats(); loadAgenda(); loadAll();
+  showToast('Termin wiederhergestellt.');
+  loadStats(); loadCalendar(); loadAll();
 }
 
 // ══════════════════════════════════════════
-// BLOQUEAR HORÁRIOS
+// ZEITEN SPERREN
 // ══════════════════════════════════════════
 async function loadBlockedSlots() {
   const list = document.getElementById('blocked-list');
@@ -633,18 +653,18 @@ async function loadBlockedSlots() {
   const { data } = await db.from('blocked_slots').select('*').gte('date', today).order('date').order('time');
 
   if (!data || data.length === 0) {
-    list.innerHTML = '<div class="empty-state"><div class="icon">✅</div>Nenhum horário bloqueado.</div>';
+    list.innerHTML = '<div class="empty-state"><div class="icon">✅</div>Keine gesperrten Zeiten.</div>';
     return;
   }
 
   list.innerHTML = data.map(b => {
-    const date = new Date(b.date + 'T12:00:00').toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long' });
-    const timeStr = b.time ? b.time.slice(0,5) : 'Dia todo';
+    const date = new Date(b.date + 'T12:00:00').toLocaleDateString('de-DE', { weekday:'long', day:'numeric', month:'long' });
+    const timeStr = b.time ? b.time.slice(0,5) : 'Ganzer Tag';
     return `
       <div class="blocked-item">
         <div class="bi-info">
           🚫 ${date} · ${timeStr}
-          <span>${b.reason || 'Sem motivo especificado'}</span>
+          <span>${b.reason || 'Kein Grund angegeben'}</span>
         </div>
         <button class="bi-remove" onclick="removeBlock('${b.id}')">✕</button>
       </div>`;
@@ -656,33 +676,33 @@ async function addBlock() {
   const time = document.getElementById('block-time').value;
   const reason = document.getElementById('block-reason').value.trim();
 
-  if (!date) { showToast('Selecione uma data.'); return; }
+  if (!date) { showToast('Bitte wählen Sie ein Datum aus.'); return; }
 
   const { error } = await db.from('blocked_slots').insert({
     date, time: time || null, reason: reason || null
   });
 
-  if (error) { showToast('Erro ao bloquear.'); return; }
+  if (error) { showToast('Fehler beim Sperren.'); return; }
 
   document.getElementById('block-date').value = '';
   document.getElementById('block-time').value = '';
   document.getElementById('block-reason').value = '';
-  showToast('Horário bloqueado com sucesso!');
+  showToast('Zeit erfolgreich gesperrt!');
   loadBlockedSlots();
 }
 
 async function removeBlock(id) {
   await db.from('blocked_slots').delete().eq('id', id);
-  showToast('Bloqueio removido.');
+  showToast('Sperre entfernt.');
   loadBlockedSlots();
 }
 
 // ══════════════════════════════════════════
-// TABS
+// REGISTER
 // ══════════════════════════════════════════
 function switchTab(name) {
   document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    const names = ['agenda','todos','bloquear'];
+    const names = ['kalender','todos','bloquear'];
     b.classList.toggle('active', names[i] === name);
   });
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -692,7 +712,7 @@ function switchTab(name) {
 }
 
 // ══════════════════════════════════════════
-// TOAST
+// HINWEIS
 // ══════════════════════════════════════════
 let toastTimer;
 function showToast(msg) {
