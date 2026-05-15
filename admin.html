@@ -397,8 +397,8 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
     <!-- REGISTER -->
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('kalender')">📅 Kalender</button>
-      <button class="tab-btn" onclick="switchTab('todos')">📋 Alle</button>
-      <button class="tab-btn" onclick="switchTab('bloquear')">🚫 Sperren</button>
+      <button class="tab-btn" onclick="switchTab('alle')">📋 Alle</button>
+      <button class="tab-btn" onclick="switchTab('sperren')">🚫 Sperren</button>
     </div>
 
     <!-- TAB: TAGESKALENDER -->
@@ -414,7 +414,7 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
     </div>
 
     <!-- TAB: ALLE TERMINE -->
-    <div class="tab-panel" id="tab-todos">
+    <div class="tab-panel" id="tab-alle">
       <div class="date-selector" style="gap:12px; flex-wrap:wrap;">
         <label>Von:</label>
         <input class="date-input" type="date" id="filter-from" onchange="loadAll()">
@@ -428,7 +428,7 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
     </div>
 
     <!-- TAB: ZEITEN SPERREN -->
-    <div class="tab-panel" id="tab-bloquear">
+    <div class="tab-panel" id="tab-sperren">
       <div class="block-form">
         <h3>Datum / Uhrzeit sperren</h3>
         <div class="block-row">
@@ -488,7 +488,7 @@ const SERVICE_NAMES_BY_ORDER = {
 };
 
 function getServiceName(booking) {
-  return SERVICE_NAMES_BY_ORDER[Number(booking.services?.sort_order)] || booking.service_name;
+  return SERVICE_NAMES_BY_ORDER[Number(booking.services?.sort_order)] || 'Behandlung';
 }
 
 // ══════════════════════════════════════════
@@ -702,13 +702,13 @@ async function removeBlock(id) {
 // ══════════════════════════════════════════
 function switchTab(name) {
   document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    const names = ['kalender','todos','bloquear'];
+    const names = ['kalender','alle','sperren'];
     b.classList.toggle('active', names[i] === name);
   });
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
-  if (name === 'todos') loadAll();
-  if (name === 'bloquear') loadBlockedSlots();
+  if (name === 'alle') loadAll();
+  if (name === 'sperren') loadBlockedSlots();
 }
 
 // ══════════════════════════════════════════
