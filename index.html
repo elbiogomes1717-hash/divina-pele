@@ -655,13 +655,11 @@ const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const WORK_HOURS = ['09:00', '10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
 const WORK_DAYS = [1, 2, 3, 4, 5];
 
-// Tradução das categorias para alemão
-const CAT_DE = {
-  'Todos': 'Alle',
-  'Manicure e Pedicure': 'Maniküre & Pediküre',
-  'Sobrancelhas e Cílios': 'Augenbrauen & Wimpern',
-  'Depilação Masculina': 'Haarentfernung Herren',
-  'Depilação Feminina': 'Haarentfernung Damen'
+const CAT_EMOJI = {
+  'Maniküre & Pediküre':    '💅',
+  'Augenbrauen & Wimpern':  '👁️',
+  'Haarentfernung Herren':  '🧔',
+  'Haarentfernung Damen':   '👩'
 };
 
 const MONTHS_DE = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
@@ -669,7 +667,7 @@ const DAYS_DE = ['So','Mo','Di','Mi','Do','Fr','Sa'];
 
 let services = [];
 let selectedService = null;
-let activeCategory = 'Todos';
+let activeCategory = 'Alle';
 let selectedDate = null;
 let selectedTime = null;
 let currentYear, currentMonth;
@@ -718,17 +716,10 @@ async function loadServices() {
 }
 
 function renderCategoryFilters() {
-  const cats = ['Todos', ...new Set(services.map(s => s.category))];
-  const emojis = {
-    'Todos': '✦',
-    'Manicure e Pedicure': '💅',
-    'Sobrancelhas e Cílios': '👁️',
-    'Depilação Masculina': '🧔',
-    'Depilação Feminina': '👩'
-  };
+  const cats = ['Alle', ...new Set(services.map(s => s.category))];
   document.getElementById('cat-filters').innerHTML = cats.map(c =>
     `<button class="cat-btn ${c === activeCategory ? 'active' : ''}" onclick="setCategory('${c}')">
-      ${emojis[c] || '✨'} ${CAT_DE[c] || c}
+      ${c === 'Alle' ? '✦' : (CAT_EMOJI[c] || '✨')} ${c}
     </button>`
   ).join('');
 }
@@ -743,7 +734,7 @@ function renderServices() {
   const container = document.getElementById('services-list');
   if (!services.length) { container.innerHTML = '<div class="loading-slots">Keine Behandlungen gefunden.</div>'; return; }
 
-  const filtered = activeCategory === 'Todos'
+  const filtered = activeCategory === 'Alle'
     ? services
     : services.filter(s => s.category === activeCategory);
 
@@ -754,13 +745,12 @@ function renderServices() {
     const durStr = s.duration >= 60
       ? (s.duration % 60 === 0 ? `${s.duration/60} Std.` : `${Math.floor(s.duration/60)} Std. ${s.duration%60} min`)
       : `${s.duration} min`;
-    const catDE = CAT_DE[s.category] || s.category;
     return `
       <div class="service-card ${isSelected ? 'selected' : ''}" onclick="selectService('${s.id}')">
         <div class="service-emoji">${s.emoji || '✨'}</div>
         <div class="service-info">
           <div class="service-name">${s.name}</div>
-          <div class="service-meta">${durStr} · ${catDE}</div>
+          <div class="service-meta">${durStr} · ${s.category}</div>
           ${s.description ? `<div class="service-desc">${s.description}</div>` : ''}
         </div>
         <div class="service-price">€${Number(s.price).toFixed(0)}</div>
@@ -971,7 +961,7 @@ async function submitBooking() {
 }
 
 function resetApp() {
-  selectedService = null; selectedDate = null; selectedTime = null; activeCategory = 'Todos';
+  selectedService = null; selectedDate = null; selectedTime = null; activeCategory = 'Alle';
   document.getElementById('client-name').value = '';
   document.getElementById('client-email').value = '';
   document.getElementById('client-phone').value = '';
