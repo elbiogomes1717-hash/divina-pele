@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
 <title>Divina Pele | Online Terminbuchung</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -100,14 +101,11 @@ body {
 .hero-section {
   background: linear-gradient(160deg, var(--brown-dark) 0%, var(--brown-mid) 55%, var(--brown-warm) 100%);
   border-radius: var(--radius);
-  padding: 28px 24px;
+  padding: 32px 24px 28px;
   text-align: center;
   margin-bottom: 24px;
   position: relative;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .hero-section::before {
   content: '✦';
@@ -117,12 +115,14 @@ body {
   top: -60px; right: -40px;
   pointer-events: none;
 }
+.hero-logo-box { display: contents; }
 .hero-logo {
-  height: 160px;
+  height: 120px;
   width: auto;
-  max-width: 85%;
+  max-width: 80%;
   object-fit: contain;
-  filter: drop-shadow(0 4px 20px rgba(196,149,106,0.5));
+  margin-bottom: 16px;
+  filter: drop-shadow(0 4px 20px rgba(196,149,106,0.4));
 }
 .hero-badge {
   display: inline-block;
@@ -498,7 +498,9 @@ body {
 /* ─── MOBILE ─── */
 @media (max-width: 480px) {
   .container { padding: 16px 12px 60px; }
+  .hero-section { padding: 24px 16px 20px; gap: 14px; }
   .hero-section h1 { font-size: 24px; }
+  .hero-logo { width: 78%; max-width: 260px; }
   .time-grid { grid-template-columns: repeat(3, 1fr); }
   .step-item span:not(.step-dot) { display: none; }
 }
@@ -509,11 +511,7 @@ body {
 <!-- TOPBAR -->
 <header class="topbar">
   <div class="topbar-brand">
-    <span class="star">✦</span>
-    <div>
-      <span class="name">DIVINA PELE</span>
-      <span class="city">KOSMETIKSTUDIO · GILCHING</span>
-    </div>
+    <img src="divina.png" alt="Divina Pele" class="topbar-logo">
   </div>
 </header>
 
@@ -545,7 +543,13 @@ body {
   <!-- ══ SCREEN 1: BEHANDLUNGEN ══ -->
   <div class="screen active" id="screen-1">
     <div class="hero-section">
-      <img src="divina.png" alt="Divina Pele" class="hero-logo">
+      <div class="hero-logo-box">
+        <img src="divina.png" alt="Divina Pele" class="hero-logo">
+      </div>
+      <div>
+        <h1>Ihre Schönheit, <em>Ihr Moment.</em></h1>
+        <p>Buchen Sie eine exklusive Behandlung bei <nobr>Erica Friis,</nobr> Hautpflegespezialistin in Gilching.</p>
+      </div>
     </div>
 
     <p class="section-title">Unsere Behandlungen</p>
@@ -984,13 +988,4 @@ function resetApp() {
   document.getElementById('client-notes').value = '';
   document.getElementById('btn-next-1').disabled = true;
   document.getElementById('btn-next-2').disabled = true;
-  goToStep(1);
-  renderServices();
-}
-
-// ══ INIT ══
-loadServices();
-</script>
-</body>
-</html>
-                                                                                                                                                                                                      
+ 
