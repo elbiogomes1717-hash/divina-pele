@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Divina Pele — Online-Terminbuchung</title>
+<title>Divina Pele — Online Terminbuchung</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-/* ─── RESET & VARIABLEN ─── */
+/* ─── RESET & VARIABLES ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --brown-dark: #1e1208;
@@ -35,24 +35,24 @@ body {
   min-height: 100vh;
 }
 
-/* ─── KOPFLEISTE ─── */
+/* ─── TOPBAR ─── */
 .topbar {
   background: var(--brown-dark);
-  padding: 14px 20px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   position: sticky;
   top: 0;
   z-index: 100;
 }
-.topbar-brand { display: flex; align-items: center; gap: 8px; }
+.topbar-brand { display: flex; align-items: center; gap: 10px; }
+.topbar-logo { height: 44px; width: auto; object-fit: contain; filter: brightness(1.05); }
 .topbar-brand .star { color: var(--gold-light); font-size: 14px; }
 .topbar-brand .name { font-size: 15px; letter-spacing: 2px; color: var(--gold-light); }
 .topbar-brand .city { font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 1.5px; display: block; margin-top: 1px; }
 
-
-/* ─── SCHRITTANZEIGE ─── */
+/* ─── STEPS INDICATOR ─── */
 .steps-bar {
   background: var(--white);
   border-bottom: 1px solid var(--cream-3);
@@ -88,15 +88,15 @@ body {
 .step-line { width: 30px; height: 1px; background: var(--cream-3); margin: 0 4px; flex-shrink: 0; }
 .step-line.done { background: var(--brown-warm); }
 
-/* ─── INHALTSBEREICH ─── */
+/* ─── CONTAINER ─── */
 .container { max-width: 520px; margin: 0 auto; padding: 24px 16px 60px; }
 
-/* ─── ANSICHTEN ─── */
+/* ─── SCREENS ─── */
 .screen { display: none; }
 .screen.active { display: block; animation: fadeUp 0.3s ease; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ─── ANSICHT 1: BEHANDLUNGEN ─── */
+/* ─── SCREEN 1: SERVICES ─── */
 .hero-section {
   background: linear-gradient(160deg, var(--brown-dark) 0%, var(--brown-mid) 55%, var(--brown-warm) 100%);
   border-radius: var(--radius);
@@ -113,6 +113,13 @@ body {
   color: rgba(255,255,255,0.025);
   top: -60px; right: -40px;
   pointer-events: none;
+}
+.hero-logo {
+  height: 90px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 14px;
+  filter: brightness(1.05) drop-shadow(0 2px 12px rgba(196,149,106,0.25));
 }
 .hero-badge {
   display: inline-block;
@@ -165,7 +172,7 @@ body {
 .service-card.selected .service-desc { display: block; }
 .service-price { font-size: 16px; font-weight: 700; color: var(--brown-warm); flex-shrink: 0; }
 
-/* ─── KATEGORIEFILTER ─── */
+/* ─── CATEGORY FILTERS ─── */
 .cat-filters { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 16px; }
 .cat-btn {
   background: var(--white);
@@ -211,7 +218,7 @@ body {
 }
 .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── ANSICHT 2: KALENDER ─── */
+/* ─── SCREEN 2: CALENDAR ─── */
 .selected-service-bar {
   background: var(--brown-dark);
   border-radius: var(--radius);
@@ -313,7 +320,7 @@ body {
   font-size: 12px;
 }
 
-/* ─── ANSICHT 3: FORMULAR ─── */
+/* ─── SCREEN 3: FORM ─── */
 .booking-recap {
   background: var(--cream-2);
   border-radius: var(--radius);
@@ -375,7 +382,7 @@ body {
   text-align: center;
 }
 
-/* ─── ANSICHT 4: ERFOLG ─── */
+/* ─── SCREEN 4: SUCCESS ─── */
 .success-card {
   background: var(--white);
   border-radius: var(--radius);
@@ -439,7 +446,7 @@ body {
 }
 .new-booking-btn:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── FEHLERMELDUNG ─── */
+/* ─── ERROR MESSAGE ─── */
 .error-msg {
   background: #fdecea;
   border: 1px solid #e08080;
@@ -452,7 +459,7 @@ body {
 }
 .error-msg.visible { display: block; }
 
-/* ─── FUSSZEILE ─── */
+/* ─── FOOTER ─── */
 .footer {
   text-align: center;
   padding: 20px;
@@ -474,7 +481,7 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ─── MOBIL ─── */
+/* ─── MOBILE ─── */
 @media (max-width: 480px) {
   .container { padding: 16px 12px 60px; }
   .hero-section h1 { font-size: 24px; }
@@ -485,18 +492,14 @@ body {
 </head>
 <body>
 
-<!-- KOPFLEISTE -->
+<!-- TOPBAR -->
 <header class="topbar">
   <div class="topbar-brand">
-    <span class="star">✦</span>
-    <div>
-      <span class="name">DIVINA PELE</span>
-      <span class="city">KOSMETIKSTUDIO · GILCHING</span>
-    </div>
+    <img src="divina.png" alt="Divina Pele" class="topbar-logo">
   </div>
 </header>
 
-<!-- SCHRITTE -->
+<!-- STEPS -->
 <div class="steps-bar" id="steps-bar">
   <div class="step-item active" id="step-1">
     <div class="step-dot">1</div>
@@ -521,29 +524,26 @@ body {
 
 <main class="container">
 
-  <!-- ══ ANSICHT 1: BEHANDLUNGEN ══ -->
+  <!-- ══ SCREEN 1: BEHANDLUNGEN ══ -->
   <div class="screen active" id="screen-1">
     <div class="hero-section">
-      <div class="hero-badge">KOSMETIKSTUDIO · GILCHING</div>
+      <img src="divina.png" alt="Divina Pele" class="hero-logo">
       <h1>Ihre Schönheit, <em>Ihr Moment.</em></h1>
-      <p>Buchen Sie eine exklusive Behandlung bei Erica Friis — Spezialistin für Hautpflege in Gilching.</p>
+      <p>Buchen Sie eine exklusive Behandlung bei Erica Friis — Hautpflegespezialistin in Gilching.</p>
     </div>
 
     <p class="section-title">Unsere Behandlungen</p>
-    <div class="cat-filters" id="cat-filters">
-      <!-- per JavaScript erzeugt -->
-    </div>
+    <div class="cat-filters" id="cat-filters"></div>
     <div id="services-list">
-      <div class="loading-slots">Behandlungen werden geladen...</div>
+      <div class="loading-slots">Behandlungen werden geladen…</div>
     </div>
 
-    <button class="btn-primary" id="btn-next-1" disabled onclick="goToStep(2)"
-      >
+    <button class="btn-primary" id="btn-next-1" disabled onclick="goToStep(2)">
       Termin wählen →
     </button>
   </div>
 
-  <!-- ══ ANSICHT 2: KALENDER ══ -->
+  <!-- ══ SCREEN 2: KALENDER ══ -->
   <div class="screen" id="screen-2">
     <div class="selected-service-bar">
       <span class="ssb-emoji" id="ssb-emoji">💆</span>
@@ -560,29 +560,28 @@ body {
         <span class="cal-month" id="cal-month-label">—</span>
         <button class="cal-nav-btn" onclick="nextMonth()">›</button>
       </div>
-      <div class="cal-grid" id="cal-grid"><!-- per JavaScript erzeugt --></div>
+      <div class="cal-grid" id="cal-grid"></div>
       <div class="cal-legend">
         <div class="legend-item"><div class="legend-dot" style="background:var(--cream-2);border:1px solid var(--cream-3)"></div> <span>Verfügbar</span></div>
         <div class="legend-item"><div class="legend-dot" style="background:#fdecea"></div> <span>Belegt</span></div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--brown-dark)"></div> <span>Ausgewählt</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--brown-dark)"></div> <span>Gewählt</span></div>
       </div>
     </div>
 
     <div class="time-card" id="time-card" style="display:none">
-      <h3 id="time-card-title">Verfügbare Zeiten</h3>
-      <div class="time-grid" id="time-grid"><!-- per JavaScript erzeugt --></div>
+      <h3>Verfügbare Zeiten</h3>
+      <div class="time-grid" id="time-grid"></div>
     </div>
 
     <div style="display:flex; gap:10px; margin-top:8px;">
       <button class="btn-secondary" onclick="goToStep(1)">← Zurück</button>
-      <button class="btn-primary" id="btn-next-2" disabled onclick="goToStep(3)" style="flex:1"
-        >
+      <button class="btn-primary" id="btn-next-2" disabled onclick="goToStep(3)" style="flex:1">
         Daten eingeben →
       </button>
     </div>
   </div>
 
-  <!-- ══ ANSICHT 3: FORMULAR ══ -->
+  <!-- ══ SCREEN 3: FORMULAR ══ -->
   <div class="screen" id="screen-3">
     <div class="booking-recap" id="booking-recap">
       <div class="recap-row"><span>Behandlung</span><strong id="recap-service">—</strong></div>
@@ -598,35 +597,34 @@ body {
       </div>
       <div class="field-group">
         <label class="field-label">E-Mail *</label>
-        <input class="field-input" id="client-email" type="email" placeholder="maria@example.de" autocomplete="email">
+        <input class="field-input" id="client-email" type="email" placeholder="maria@email.de" autocomplete="email">
       </div>
       <div class="field-group">
         <label class="field-label">Telefon / WhatsApp</label>
-        <input class="field-input" id="client-phone" type="tel" placeholder="+49 176 ..." autocomplete="tel">
+        <input class="field-input" id="client-phone" type="tel" placeholder="+49 176 …" autocomplete="tel">
       </div>
       <div class="field-group">
-        <label class="field-label">Hinweise (optional)</label>
-        <textarea class="field-textarea" id="client-notes" placeholder="Empfindliche Haut, Allergien, Wünsche..."></textarea>
+        <label class="field-label">Anmerkungen (optional)</label>
+        <textarea class="field-textarea" id="client-notes" placeholder="Empfindliche Haut, Allergien, Vorlieben…"></textarea>
       </div>
 
-      <div class="error-msg" id="form-error">Bitte geben Sie Ihren Namen und Ihre E-Mail-Adresse ein.</div>
+      <div class="error-msg" id="form-error">Bitte geben Sie Ihren Namen und Ihre E-Mail an.</div>
 
-      <button class="btn-primary" id="btn-confirm" onclick="submitBooking()"
-        >
+      <button class="btn-primary" id="btn-confirm" onclick="submitBooking()">
         ✓ Termin bestätigen
       </button>
-      <p class="privacy-note">Ihre Daten werden ausschließlich zur Bestätigung Ihres Termins verwendet.</p>
+      <p class="privacy-note">Ihre Daten werden nur zur Terminbestätigung verwendet.</p>
     </div>
 
     <button class="btn-secondary" onclick="goToStep(2)" style="width:100%; margin-top:12px;">← Zurück</button>
   </div>
 
-  <!-- ══ ANSICHT 4: BESTÄTIGUNG ══ -->
+  <!-- ══ SCREEN 4: BESTÄTIGUNG ══ -->
   <div class="screen" id="screen-4">
     <div class="success-card">
       <div class="success-icon">✓</div>
-      <h2>Termin erfolgreich gebucht!</h2>
-      <p>Ihr Termin ist bestätigt. Wir freuen uns auf Sie bei Divina Pele in Gilching.</p>
+      <h2>Erfolgreich gebucht!</h2>
+      <p>Ihr Termin ist bestätigt. Bis bald im Divina Pele, Gilching.</p>
 
       <div class="booking-summary-box">
         <div class="bsb-row"><span class="bsb-icon">💆</span><span class="bsb-key">Behandlung</span><span class="bsb-val" id="conf-service">—</span></div>
@@ -636,7 +634,7 @@ body {
       </div>
 
       <div class="email-notice">
-        ✉️ <span>Die Bestätigung wurde an Ihre E-Mail-Adresse gesendet.</span>
+        ✉️ Bestätigung an Ihre E-Mail gesendet.
       </div>
 
       <button class="new-booking-btn" onclick="resetApp()">Neuen Termin buchen</button>
@@ -648,116 +646,53 @@ body {
 <footer class="footer">✦ DIVINA PELE · ERICA FRIIS · GILCHING</footer>
 
 <script>
-// ══════════════════════════════════════════
-// SUPABASE-KONFIGURATION
-// Bei Bedarf durch eigene Zugangsdaten ersetzen.
-// ══════════════════════════════════════════
 const SUPABASE_URL = 'https://ftvxpnudvamahfizzuvf.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dnhwbnVkdmFtYWhmaXp6dXZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5OTYxODIsImV4cCI6MjA5MzU3MjE4Mn0.s1q7M85T_efk7chLgPOwsdp5zFjE7RxO6MNwwEOFeVg';
 
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ══════════════════════════════════════════
-// ÖFFNUNGSZEITEN
-// Nach Ericas Kalender anpassen
-// ══════════════════════════════════════════
 const WORK_HOURS = ['09:00', '10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
-const WORK_DAYS = [1, 2, 3, 4, 5]; // 0=So, 1=Mo ... 6=Sa (ohne Samstag und Sonntag)
+const WORK_DAYS = [1, 2, 3, 4, 5];
 
-// ══════════════════════════════════════════
-// APP-STATUS
-// ══════════════════════════════════════════
+// Tradução das categorias para alemão
+const CAT_DE = {
+  'Todos': 'Alle',
+  'Manicure e Pedicure': 'Maniküre & Pediküre',
+  'Sobrancelhas e Cílios': 'Augenbrauen & Wimpern',
+  'Depilação Masculina': 'Haarentfernung Herren',
+  'Depilação Feminina': 'Haarentfernung Damen'
+};
+
+const MONTHS_DE = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const DAYS_DE = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+
 let services = [];
 let selectedService = null;
-let activeCategory = 'Alle';
+let activeCategory = 'Todos';
 let selectedDate = null;
 let selectedTime = null;
 let currentYear, currentMonth;
-let takenSlots = []; // bereits gebuchte Zeiten im Monat
-let blockedDays = []; // vollständig gesperrte Tage
 
-
-const CATEGORY_LABELS = {
-  all: 'Alle',
-  nails: 'Maniküre & Pediküre',
-  face: 'Augenbrauen & Wimpern',
-  men: 'Haarentfernung für Herren',
-  women: 'Haarentfernung für Damen'
-};
-
-const SERVICE_NAMES_BY_ORDER = {
-  101: 'Maniküre mit Shellac',
-  102: 'Maniküre',
-  103: 'Pediküre',
-  104: 'Pediküre mit Shellac',
-  105: 'Fußpflege',
-  201: 'Augenbrauenlifting',
-  202: 'Wimpernlifting',
-  203: 'Gesichtsbehandlung – Mikrodermabrasion',
-  204: 'Luxus-Gesichtsbehandlung (Mikrodermabrasion + Hautlicht)',
-  205: 'Klassische feuchtigkeitsspendende Gesichtsbehandlung',
-  301: 'Haarentfernung Herren – Nase',
-  302: 'Haarentfernung Herren – Achseln',
-  303: 'Haarentfernung Herren – Nacken',
-  304: 'Haarentfernung Herren – Brust',
-  305: 'Haarentfernung Herren – Bauch',
-  306: 'Haarentfernung Herren – Rücken komplett',
-  307: 'Haarentfernung Herren – Oberarme',
-  308: 'Haarentfernung Herren – Unterarme',
-  309: 'Haarentfernung Herren – Arme komplett',
-  310: 'Haarentfernung Herren – Oberschenkel',
-  311: 'Haarentfernung Herren – Unterschenkel',
-  312: 'Haarentfernung Herren – Beine komplett',
-  313: 'Haarentfernung Herren – Brust & Bauch',
-  401: 'Haarentfernung Damen – Achseln',
-  402: 'Haarentfernung Damen – Gesicht',
-  403: 'Haarentfernung Damen – Oberlippe',
-  404: 'Haarentfernung Damen – Kinn',
-  405: 'Haarentfernung Damen – Gesichtseiten',
-  406: 'Haarentfernung Damen – Hals',
-  407: 'Haarentfernung Damen – Arme komplett',
-  408: 'Haarentfernung Damen – Unterarme',
-  410: 'Haarentfernung Damen – Bauch',
-  411: 'Haarentfernung Damen – Gesäß',
-  412: 'Haarentfernung Damen – Bikinizone',
-  413: 'Haarentfernung Damen – Intimbereich komplett',
-  414: 'Haarentfernung Damen – Oberschenkel',
-  415: 'Haarentfernung Damen – Unterschenkel',
-  416: 'Haarentfernung Damen – Beine komplett',
-  417: 'Haarentfernung Damen – Intimbereich komplett, Achseln & Beine'
-};
-
-function getCategoryKey(service) {
-  const order = Number(service.sort_order || 0);
-  if (order >= 100 && order < 200) return 'nails';
-  if (order >= 200 && order < 300) return 'face';
-  if (order >= 300 && order < 400) return 'men';
-  if (order >= 400 && order < 500) return 'women';
-  return 'all';
-}
-
-function translateCategory(service) {
-  return CATEGORY_LABELS[getCategoryKey(service)] || CATEGORY_LABELS.all;
-}
-
-function translateServiceName(service) {
-  return SERVICE_NAMES_BY_ORDER[Number(service.sort_order)] || service.name;
-}
-
-// ══════════════════════════════════════════
-// SCHRITTE
-// ══════════════════════════════════════════
+// ══ STEPS ══
 function goToStep(n) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + n).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
   updateStepsUI(n);
-  if (n === 2 && selectedService) {
-    document.getElementById('ssb-emoji').textContent = selectedService.emoji || '✨';
-    document.getElementById('ssb-name').textContent = translateServiceName(selectedService);
-    document.getElementById('ssb-meta').textContent = `${selectedService.duration} min · ${translateCategory(selectedService)}`;
+  if (n === 2) {
+    if (!currentYear) initCalendar();
+    else renderCalendar();
     if (selectedDate) loadTimeSlots(selectedDate);
+    // Atualizar barra do serviço selecionado
+    if (selectedService) {
+      document.getElementById('ssb-emoji').textContent = selectedService.emoji || '✨';
+      document.getElementById('ssb-name').textContent = selectedService.name;
+      const dur = selectedService.duration >= 60
+        ? (selectedService.duration % 60 === 0 ? `${selectedService.duration/60} Std.` : `${Math.floor(selectedService.duration/60)} Std. ${selectedService.duration%60} min`)
+        : `${selectedService.duration} min`;
+      document.getElementById('ssb-meta').textContent = `${dur} · €${Number(selectedService.price).toFixed(0)}`;
+    }
   }
   if (n === 3) fillRecap();
 }
@@ -773,9 +708,7 @@ function updateStepsUI(current) {
   }
 }
 
-// ══════════════════════════════════════════
-// BEHANDLUNGEN LADEN
-// ══════════════════════════════════════════
+// ══ SERVIÇOS ══
 async function loadServices() {
   const { data, error } = await db.from('services').select('*').eq('active', true).order('sort_order');
   if (error) { console.error(error); return; }
@@ -785,17 +718,17 @@ async function loadServices() {
 }
 
 function renderCategoryFilters() {
-  const cats = [CATEGORY_LABELS.all, ...new Set(services.map(translateCategory))];
+  const cats = ['Todos', ...new Set(services.map(s => s.category))];
   const emojis = {
-    'Alle': '✦',
-    [CATEGORY_LABELS.nails]: '💅',
-    [CATEGORY_LABELS.face]: '👁️',
-    [CATEGORY_LABELS.men]: '🧔',
-    [CATEGORY_LABELS.women]: '👩'
+    'Todos': '✦',
+    'Manicure e Pedicure': '💅',
+    'Sobrancelhas e Cílios': '👁️',
+    'Depilação Masculina': '🧔',
+    'Depilação Feminina': '👩'
   };
   document.getElementById('cat-filters').innerHTML = cats.map(c =>
     `<button class="cat-btn ${c === activeCategory ? 'active' : ''}" onclick="setCategory('${c}')">
-      ${emojis[c] || '✨'} ${c}
+      ${emojis[c] || '✨'} ${CAT_DE[c] || c}
     </button>`
   ).join('');
 }
@@ -808,25 +741,26 @@ function setCategory(cat) {
 
 function renderServices() {
   const container = document.getElementById('services-list');
-  if (!services.length) { container.innerHTML = '<div class="loading-slots">Keine Behandlung gefunden.</div>'; return; }
+  if (!services.length) { container.innerHTML = '<div class="loading-slots">Keine Behandlungen gefunden.</div>'; return; }
 
-  const filtered = activeCategory === 'Alle'
+  const filtered = activeCategory === 'Todos'
     ? services
-    : services.filter(s => translateCategory(s) === activeCategory);
+    : services.filter(s => s.category === activeCategory);
 
-  if (!filtered.length) { container.innerHTML = '<div class="loading-slots">Keine Behandlung in dieser Kategorie.</div>'; return; }
+  if (!filtered.length) { container.innerHTML = '<div class="loading-slots">Keine Behandlungen in dieser Kategorie.</div>'; return; }
 
   container.innerHTML = filtered.map(s => {
     const isSelected = selectedService && selectedService.id === s.id;
     const durStr = s.duration >= 60
-      ? (s.duration % 60 === 0 ? `${s.duration/60}h` : `${Math.floor(s.duration/60)}h ${s.duration%60}min`)
+      ? (s.duration % 60 === 0 ? `${s.duration/60} Std.` : `${Math.floor(s.duration/60)} Std. ${s.duration%60} min`)
       : `${s.duration} min`;
+    const catDE = CAT_DE[s.category] || s.category;
     return `
       <div class="service-card ${isSelected ? 'selected' : ''}" onclick="selectService('${s.id}')">
         <div class="service-emoji">${s.emoji || '✨'}</div>
         <div class="service-info">
-          <div class="service-name">${translateServiceName(s)}</div>
-          <div class="service-meta">${durStr} · ${translateCategory(s)}</div>
+          <div class="service-name">${s.name}</div>
+          <div class="service-meta">${durStr} · ${catDE}</div>
           ${s.description ? `<div class="service-desc">${s.description}</div>` : ''}
         </div>
         <div class="service-price">€${Number(s.price).toFixed(0)}</div>
@@ -841,9 +775,7 @@ function selectService(id) {
   document.getElementById('btn-next-1').disabled = false;
 }
 
-// ══════════════════════════════════════════
-// KALENDER
-// ══════════════════════════════════════════
+// ══ KALENDER ══
 function initCalendar() {
   const now = new Date();
   currentYear = now.getFullYear();
@@ -865,15 +797,9 @@ function nextMonth() {
   renderCalendar();
 }
 
-const MONTHS_DE = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-const DAYS_DE = ['So','Mo','Di','Mi','Do','Fr','Sa'];
-
 async function renderCalendar() {
-  const months = MONTHS_DE;
-  const days = DAYS_DE;
-  document.getElementById('cal-month-label').textContent = months[currentMonth] + ' ' + currentYear;
+  document.getElementById('cal-month-label').textContent = MONTHS_DE[currentMonth] + ' ' + currentYear;
 
-  // Buchungen und Sperrzeiten des Monats laden
   const monthStart = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-01`;
   const monthEnd = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-31`;
 
@@ -882,7 +808,6 @@ async function renderCalendar() {
     db.from('blocked_slots').select('date,time').gte('date', monthStart).lte('date', monthEnd)
   ]);
 
-  // Belegte Daten zuordnen (alle Zeiten vergeben)
   const bookingsByDate = {};
   (bookings || []).forEach(b => {
     if (!bookingsByDate[b.date]) bookingsByDate[b.date] = [];
@@ -897,8 +822,7 @@ async function renderCalendar() {
   const firstDay = new Date(currentYear, currentMonth, 1).getDay();
   const daysInMonth = new Date(currentYear, currentMonth+1, 0).getDate();
 
-  let html = days.map(d => `<div class="cal-header">${d}</div>`).join('');
-
+  let html = DAYS_DE.map(d => `<div class="cal-header">${d}</div>`).join('');
   for (let i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
 
   for (let d = 1; d <= daysInMonth; d++) {
@@ -944,7 +868,7 @@ async function loadTimeSlots(dateStr) {
   const timeCard = document.getElementById('time-card');
   const grid = document.getElementById('time-grid');
   timeCard.style.display = 'block';
-  grid.innerHTML = '<div class="loading-slots" style="grid-column:1/-1">Wird geladen...</div>';
+  grid.innerHTML = '<div class="loading-slots" style="grid-column:1/-1">Laden…</div>';
 
   const [{ data: bookings }, { data: blocked }] = await Promise.all([
     db.from('bookings').select('time').eq('date', dateStr).eq('status','confirmed'),
@@ -972,13 +896,10 @@ function selectTime(time) {
   loadTimeSlots(selectedDate);
 }
 
-// ══════════════════════════════════════════
-// FORMULAR
-// ══════════════════════════════════════════
+// ══ FORMULAR ══
 function fillRecap() {
   if (!selectedService || !selectedDate || !selectedTime) return;
-  const name = translateServiceName(selectedService);
-  document.getElementById('recap-service').textContent = name;
+  document.getElementById('recap-service').textContent = selectedService.name;
   document.getElementById('recap-date').textContent = formatDate(selectedDate);
   document.getElementById('recap-time').textContent = selectedTime + ' — ' + calcEndTime(selectedTime, selectedService.duration);
   document.getElementById('recap-price').textContent = '€' + Number(selectedService.price).toFixed(2);
@@ -987,7 +908,7 @@ function fillRecap() {
 function formatDate(dateStr) {
   const [y, m, d] = dateStr.split('-');
   const date = new Date(y, m-1, d);
-  return date.toLocaleDateString('de-DE', { weekday:'short', day:'numeric', month:'long' });
+  return date.toLocaleDateString('de-DE', { weekday: 'short', day: 'numeric', month: 'long' });
 }
 
 function calcEndTime(startTime, duration) {
@@ -1005,20 +926,20 @@ async function submitBooking() {
   errEl.classList.remove('visible');
 
   if (!name || !email) {
+    errEl.textContent = 'Bitte geben Sie Ihren Namen und Ihre E-Mail an.';
     errEl.classList.add('visible');
     return;
   }
 
   const btn = document.getElementById('btn-confirm');
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Wird bestätigt...';
+  btn.innerHTML = '<span class="spinner"></span> Wird gebucht…';
 
   const endTime = calcEndTime(selectedTime, selectedService.duration);
-  const serviceName = translateServiceName(selectedService);
 
   const { error } = await db.from('bookings').insert({
     service_id: selectedService.id,
-    service_name: serviceName, // auf Deutsch gespeicherter Anzeigename
+    service_name: selectedService.name,
     date: selectedDate,
     time: selectedTime + ':00',
     end_time: endTime + ':00',
@@ -1034,25 +955,22 @@ async function submitBooking() {
 
   if (error) {
     if (error.code === '23505') {
-      // UNIQUE-Constraint verletzt — Zeit wurde bereits gebucht
-      errEl.textContent = 'Dieser Termin wurde soeben gebucht. Bitte wählen Sie eine andere Uhrzeit.';
-      errEl.classList.add('visible');
+      errEl.textContent = 'Dieser Termin wurde soeben gebucht. Bitte wählen Sie einen anderen.';
     } else {
-      errEl.textContent = 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.';
-      errEl.classList.add('visible');
+      errEl.textContent = 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.';
     }
+    errEl.classList.add('visible');
     return;
   }
 
-  // Bestätigungsansicht füllen
-  document.getElementById('conf-service').textContent = serviceName;
+  document.getElementById('conf-service').textContent = selectedService.name;
   document.getElementById('conf-date').textContent = formatDate(selectedDate);
   document.getElementById('conf-time').textContent = selectedTime + ' — ' + endTime;
   goToStep(4);
 }
 
 function resetApp() {
-  selectedService = null; selectedDate = null; selectedTime = null; activeCategory = 'Alle';
+  selectedService = null; selectedDate = null; selectedTime = null; activeCategory = 'Todos';
   document.getElementById('client-name').value = '';
   document.getElementById('client-email').value = '';
   document.getElementById('client-phone').value = '';
@@ -1063,11 +981,8 @@ function resetApp() {
   renderServices();
 }
 
-// ══════════════════════════════════════════
-// STARTIALISIERUNG
-// ══════════════════════════════════════════
+// ══ INIT ══
 loadServices();
-initCalendar();
 </script>
 </body>
 </html>
