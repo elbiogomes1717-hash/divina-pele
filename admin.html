@@ -43,8 +43,16 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
   text-align: center;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
-.login-brand { font-size: 20px; letter-spacing: 2px; color: var(--brown-dark); margin-bottom: 4px; }
+.login-logo { height: 80px; width: auto; object-fit: contain; margin-bottom: 6px; }
 .login-sub { font-size: 11px; color: var(--text-light); letter-spacing: 1px; margin-bottom: 28px; }
+.pw-wrap { position: relative; margin-bottom: 16px; }
+.pw-wrap .login-input { margin-bottom: 0; padding-right: 44px; }
+.pw-toggle {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer; color: var(--text-light);
+  font-size: 18px; padding: 4px; line-height: 1;
+}
+.pw-toggle:hover { color: var(--brown-warm); }
 .login-label { display: block; font-size: 10px; color: var(--text-light); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; text-align: left; }
 .login-input {
   width: 100%;
@@ -346,11 +354,14 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
 <!-- LOGIN -->
 <div class="login-wrap" id="login-wrap">
   <div class="login-card">
-    <div class="login-brand">✦ DIVINA PELE</div>
+    <img src="divina.png" alt="Divina Pele" class="login-logo">
     <div class="login-sub">ADMIN-BEREICH · ERICA FRIIS</div>
     <label class="login-label">Passwort</label>
-    <input class="login-input" type="password" id="login-password" placeholder="••••••••"
-      onkeypress="if(event.key==='Enter') doLogin()">
+    <div class="pw-wrap">
+      <input class="login-input" type="password" id="login-password" placeholder="••••••••"
+        onkeypress="if(event.key==='Enter') doLogin()">
+      <button class="pw-toggle" type="button" onclick="togglePw()" id="pw-eye">👁</button>
+    </div>
     <button class="login-btn" onclick="doLogin()">Anmelden</button>
     <div class="login-error" id="login-error">Falsches Passwort. Bitte erneut versuchen.</div>
   </div>
@@ -474,6 +485,18 @@ const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // ══════════════════════════════════════════
 // LOGIN
 // ══════════════════════════════════════════
+function togglePw() {
+  const input = document.getElementById('login-password');
+  const eye = document.getElementById('pw-eye');
+  if (input.type === 'password') {
+    input.type = 'text';
+    eye.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    eye.textContent = '👁';
+  }
+}
+
 function doLogin() {
   const pwd = document.getElementById('login-password').value;
   if (pwd === ADMIN_PASSWORD) {
