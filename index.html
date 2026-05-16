@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Divina Pele | Online Terminbuchung</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 /* ─── RESET & VARIABLES ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,7 +29,7 @@
 }
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   background: var(--cream);
   color: var(--text-dark);
   min-height: 100vh;
@@ -39,24 +38,16 @@ body {
 /* ─── TOPBAR ─── */
 .topbar {
   background: var(--brown-dark);
-  padding: 8px 20px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid rgba(196,149,106,0.15);
 }
-.topbar-brand { display: flex; align-items: center; }
-.topbar-logo {
-  height: 58px;
-  width: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 1px 8px rgba(196,149,106,0.4));
-  transition: filter 0.3s;
-}
-.topbar-logo:hover { filter: drop-shadow(0 2px 12px rgba(196,149,106,0.7)); }
+.topbar-brand { display: flex; align-items: center; gap: 10px; }
+.topbar-logo { height: 44px; width: auto; object-fit: contain; filter: brightness(1.05); }
 .topbar-brand .star { color: var(--gold-light); font-size: 14px; }
 .topbar-brand .name { font-size: 15px; letter-spacing: 2px; color: var(--gold-light); }
 .topbar-brand .city { font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 1.5px; display: block; margin-top: 1px; }
@@ -109,11 +100,14 @@ body {
 .hero-section {
   background: linear-gradient(160deg, var(--brown-dark) 0%, var(--brown-mid) 55%, var(--brown-warm) 100%);
   border-radius: var(--radius);
-  padding: 32px 24px 28px;
+  padding: 28px 24px;
   text-align: center;
   margin-bottom: 24px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .hero-section::before {
   content: '✦';
@@ -122,6 +116,13 @@ body {
   color: rgba(255,255,255,0.025);
   top: -60px; right: -40px;
   pointer-events: none;
+}
+.hero-logo {
+  height: 160px;
+  width: auto;
+  max-width: 85%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 20px rgba(196,149,106,0.5));
 }
 .hero-badge {
   display: inline-block;
@@ -133,9 +134,9 @@ body {
   color: var(--gold-light);
   margin-bottom: 16px;
 }
-.hero-section h1 { font-size: 34px; color: #fff; font-weight: 300; line-height: 1.2; margin-bottom: 10px; letter-spacing: 0.5px; }
-.hero-section h1 em { color: var(--gold-light); font-style: italic; font-weight: 400; }
-.hero-section p { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 22px; max-width: 320px; margin-left: auto; margin-right: auto; font-weight: 300; }
+.hero-section h1 { font-size: 28px; color: #fff; font-weight: 400; line-height: 1.2; margin-bottom: 8px; }
+.hero-section h1 em { color: var(--gold-light); font-style: italic; }
+.hero-section p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 22px; max-width: 320px; margin-left: auto; margin-right: auto; }
 
 .section-title {
   font-size: 11px;
@@ -192,7 +193,7 @@ body {
   border-radius: 30px;
   padding: 8px 16px;
   font-size: 12px;
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   color: var(--text-light);
   cursor: pointer;
   transition: all 0.2s;
@@ -210,7 +211,7 @@ body {
   border-radius: 30px;
   padding: 15px;
   font-size: 14px;
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   cursor: pointer;
   letter-spacing: 0.5px;
   transition: all 0.2s;
@@ -225,7 +226,7 @@ body {
   border-radius: 30px;
   padding: 11px 20px;
   font-size: 13px;
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -375,7 +376,7 @@ body {
   padding: 11px 14px;
   font-size: 13px;
   color: var(--text-dark);
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   transition: all 0.2s;
   outline: none;
 }
@@ -453,7 +454,7 @@ body {
   border-radius: 30px;
   padding: 12px 24px;
   font-size: 13px;
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -508,7 +509,11 @@ body {
 <!-- TOPBAR -->
 <header class="topbar">
   <div class="topbar-brand">
-    <img src="divina.png" alt="Divina Pele" class="topbar-logo">
+    <span class="star">✦</span>
+    <div>
+      <span class="name">DIVINA PELE</span>
+      <span class="city">KOSMETIKSTUDIO · GILCHING</span>
+    </div>
   </div>
 </header>
 
@@ -540,9 +545,7 @@ body {
   <!-- ══ SCREEN 1: BEHANDLUNGEN ══ -->
   <div class="screen active" id="screen-1">
     <div class="hero-section">
-      <div class="hero-badge">KOSMETIKSTUDIO · GILCHING</div>
-      <h1>Ihre Schönheit, <em>Ihr Moment.</em></h1>
-      <p>Buchen Sie eine exklusive Behandlung bei <nobr>Erica Friis</nobr>, Hautpflegespezialistin in Gilching.</p>
+      <img src="divina.png" alt="Divina Pele" class="hero-logo">
     </div>
 
     <p class="section-title">Unsere Behandlungen</p>
@@ -722,11 +725,7 @@ function updateStepsUI(current) {
 // ══ SERVIÇOS ══
 async function loadServices() {
   const { data, error } = await db.from('services').select('*').eq('active', true).order('sort_order');
-  if (error) {
-    console.error(error);
-    document.getElementById('services-list').innerHTML = '<div class="loading-slots">Fehler beim Laden der Behandlungen. Bitte Seite neu laden.</div>';
-    return;
-  }
+  if (error) { console.error(error); return; }
   services = data;
   renderCategoryFilters();
   renderServices();
@@ -734,16 +733,15 @@ async function loadServices() {
 
 function renderCategoryFilters() {
   const cats = ['Alle', ...new Set(services.map(s => s.category))];
-  window._cats = cats;
-  document.getElementById('cat-filters').innerHTML = cats.map((c, i) =>
-    `<button class="cat-btn ${c === activeCategory ? 'active' : ''}" onclick="setCategory(${i})">
+  document.getElementById('cat-filters').innerHTML = cats.map(c =>
+    `<button class="cat-btn ${c === activeCategory ? 'active' : ''}" onclick="setCategory('${c}')">
       ${c === 'Alle' ? '✦' : (CAT_EMOJI[c] || '✨')} ${c}
     </button>`
   ).join('');
 }
 
-function setCategory(idx) {
-  activeCategory = window._cats[idx];
+function setCategory(cat) {
+  activeCategory = cat;
   renderCategoryFilters();
   renderServices();
 }
@@ -981,3 +979,18 @@ async function submitBooking() {
 function resetApp() {
   selectedService = null; selectedDate = null; selectedTime = null; activeCategory = 'Alle';
   document.getElementById('client-name').value = '';
+  document.getElementById('client-email').value = '';
+  document.getElementById('client-phone').value = '';
+  document.getElementById('client-notes').value = '';
+  document.getElementById('btn-next-1').disabled = true;
+  document.getElementById('btn-next-2').disabled = true;
+  goToStep(1);
+  renderServices();
+}
+
+// ══ INIT ══
+loadServices();
+</script>
+</body>
+</html>
+                                                                                                                                                                                                      
