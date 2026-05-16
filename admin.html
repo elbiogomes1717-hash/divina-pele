@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Divina Pele | Admin-Bereich</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -24,7 +23,7 @@
   --green: #2e7d4f;
   --red: #c0392b;
 }
-body { font-family: 'Cormorant Garant', 'Georgia', serif; background: #f0e8dc; color: var(--text-dark); min-height: 100vh; }
+body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dark); min-height: 100vh; }
 
 /* ─── LOGIN ─── */
 .login-wrap {
@@ -62,7 +61,7 @@ body { font-family: 'Cormorant Garant', 'Georgia', serif; background: #f0e8dc; c
   border-radius: 8px;
   padding: 12px 14px;
   font-size: 14px;
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   outline: none;
   margin-bottom: 16px;
   transition: border-color 0.2s;
@@ -76,7 +75,7 @@ body { font-family: 'Cormorant Garant', 'Georgia', serif; background: #f0e8dc; c
   border-radius: 30px;
   padding: 13px;
   font-size: 14px;
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   cursor: pointer;
   transition: opacity 0.2s;
 }
@@ -109,7 +108,7 @@ body { font-family: 'Cormorant Garant', 'Georgia', serif; background: #f0e8dc; c
   padding: 5px 12px;
   font-size: 11px;
   cursor: pointer;
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   transition: all 0.2s;
 }
 .logout-btn:hover { background: rgba(255,255,255,0.15); }
@@ -150,7 +149,7 @@ body { font-family: 'Cormorant Garant', 'Georgia', serif; background: #f0e8dc; c
   border-radius: 8px;
   padding: 10px;
   font-size: 12px;
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   color: var(--text-light);
   cursor: pointer;
   transition: all 0.2s;
@@ -179,7 +178,7 @@ body { font-family: 'Cormorant Garant', 'Georgia', serif; background: #f0e8dc; c
   border-radius: 7px;
   padding: 7px 10px;
   font-size: 13px;
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   color: var(--text-dark);
   background: var(--cream);
   outline: none;
@@ -194,7 +193,7 @@ body { font-family: 'Cormorant Garant', 'Georgia', serif; background: #f0e8dc; c
   font-size: 12px;
   cursor: pointer;
   color: var(--text-mid);
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   transition: all 0.2s;
 }
 .refresh-btn:hover { border-color: var(--gold); color: var(--brown-warm); }
@@ -233,7 +232,7 @@ body { font-family: 'Cormorant Garant', 'Georgia', serif; background: #f0e8dc; c
   padding: 7px 12px;
   font-size: 11px;
   cursor: pointer;
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   transition: all 0.2s;
 }
 .bc-btn.cancel { background: #fdecea; color: var(--red); }
@@ -277,7 +276,7 @@ body { font-family: 'Cormorant Garant', 'Georgia', serif; background: #f0e8dc; c
   border-radius: 7px;
   padding: 9px 12px;
   font-size: 13px;
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   background: var(--cream);
   outline: none;
   color: var(--text-dark);
@@ -290,7 +289,7 @@ body { font-family: 'Cormorant Garant', 'Georgia', serif; background: #f0e8dc; c
   border-radius: 8px;
   padding: 10px 18px;
   font-size: 12px;
-  font-family: 'Cormorant Garant', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   cursor: pointer;
   white-space: nowrap;
   transition: opacity 0.2s;
@@ -731,4 +730,15 @@ function switchTab(name) {
 
 // ══════════════════════════════════════════
 // TOAST
-// ═══════════════�
+// ══════════════════════════════════════════
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('visible');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('visible'), 3000);
+}
+</script>
+</body>
+</html>
