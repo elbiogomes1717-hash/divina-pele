@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Divina Pele — Online Terminbuchung</title>
+<title>Divina Pele | Online Terminbuchung</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 /* ─── RESET & VARIABLES ─── */
@@ -529,7 +529,7 @@ body {
     <div class="hero-section">
       <img src="divina.png" alt="Divina Pele" class="hero-logo">
       <h1>Ihre Schönheit, <em>Ihr Moment.</em></h1>
-      <p>Buchen Sie eine exklusive Behandlung bei Erica Friis — Hautpflegespezialistin in Gilching.</p>
+      <p>Buchen Sie eine exklusive Behandlung bei <nobr>Erica Friis</nobr>, Hautpflegespezialistin in Gilching.</p>
     </div>
 
     <p class="section-title">Unsere Behandlungen</p>
@@ -773,6 +773,7 @@ function selectService(id) {
   selectedDate = null; selectedTime = null;
   renderServices();
   document.getElementById('btn-next-1').disabled = false;
+  setTimeout(() => goToStep(2), 350);
 }
 
 // ══ KALENDER ══
@@ -901,7 +902,7 @@ function fillRecap() {
   if (!selectedService || !selectedDate || !selectedTime) return;
   document.getElementById('recap-service').textContent = selectedService.name;
   document.getElementById('recap-date').textContent = formatDate(selectedDate);
-  document.getElementById('recap-time').textContent = selectedTime + ' — ' + calcEndTime(selectedTime, selectedService.duration);
+  document.getElementById('recap-time').textContent = selectedTime + ' bis ' +calcEndTime(selectedTime, selectedService.duration);
   document.getElementById('recap-price').textContent = '€' + Number(selectedService.price).toFixed(2);
 }
 
@@ -965,7 +966,7 @@ async function submitBooking() {
 
   document.getElementById('conf-service').textContent = selectedService.name;
   document.getElementById('conf-date').textContent = formatDate(selectedDate);
-  document.getElementById('conf-time').textContent = selectedTime + ' — ' + endTime;
+  document.getElementById('conf-time').textContent = selectedTime + ' bis ' +endTime;
   goToStep(4);
 }
 
