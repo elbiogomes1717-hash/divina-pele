@@ -362,7 +362,7 @@ body { font-family: 'Georgia', serif; background: #f0e8dc; color: var(--text-dar
     <div class="pw-wrap">
       <input class="login-input" type="password" id="login-password" placeholder="••••••••"
         onkeypress="if(event.key==='Enter') doLogin()">
-      <button class="pw-toggle" type="button" onclick="togglePw()" id="pw-eye">👁</button>
+      <button class="pw-toggle" type="button" onclick="togglePw()" id="pw-eye">🙈</button>
     </div>
     <button class="login-btn" onclick="doLogin()">Anmelden</button>
     <div class="login-error" id="login-error">Falsches Passwort. Bitte erneut versuchen.</div>
@@ -492,10 +492,10 @@ function togglePw() {
   const eye = document.getElementById('pw-eye');
   if (input.type === 'password') {
     input.type = 'text';
-    eye.textContent = '🙈';
+    eye.textContent = '🐵';
   } else {
     input.type = 'password';
-    eye.textContent = '👁';
+    eye.textContent = '🙈';
   }
 }
 
